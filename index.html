@@ -1,0 +1,1651 @@
+<!doctype html>
+<html lang="la">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Progymnasmata</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f2ea; --paper:#fbfaf6; --ink:#2b2723; --muted:#72695e; --line:#ddd4c5;
+  --accent:#7b3a2c; --accent-soft:#f0e4dd; --ok:#4d6b4a; --danger:#8b2e2e;
+  --shadow:0 1px 2px rgba(60,40,20,.06);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#1c1b19; --paper:#242320; --ink:#e8e3d8; --muted:#a2998b; --line:#3b3732;
+    --accent:#d39c85; --accent-soft:#3a2b25; --ok:#9cbf96; --danger:#e39191; --shadow:none;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:"EB Garamond","Palatino Linotype","Book Antiqua",Palatino,Georgia,serif;
+  font-size:19px; line-height:1.5;
+}
+/* EB Garamond remplace u par v quand lang="la" (fonction OpenType locl) : on la neutralise. */
+*{font-feature-settings:"kern" 1,"liga" 1,"onum" 1,"locl" 0; font-language-override:"ENG"}
+/* consignes bilingues */
+body.cl-fr .bi > .la, body.cl-la .bi > .fr{display:none}
+header{
+  display:flex; flex-wrap:wrap; align-items:baseline; gap:.4rem 1.4rem;
+  padding:1rem clamp(1rem,4vw,2.5rem) .6rem; border-bottom:1px solid var(--line);
+}
+header h1{font-size:1.45rem; font-weight:500; letter-spacing:.06em; margin:0; font-variant:small-caps}
+nav{display:flex; flex-wrap:wrap; gap:.2rem .9rem; flex:1}
+nav button{
+  background:none; border:0; padding:.2rem 0; font:inherit; color:var(--muted); cursor:pointer;
+  border-bottom:2px solid transparent; letter-spacing:.02em;
+}
+nav button[aria-current="true"]{color:var(--ink); border-bottom-color:var(--accent)}
+.langtog{display:flex; gap:0; border:1px solid var(--line); border-radius:999px; overflow:hidden; font-size:.85rem}
+.langtog button{background:none; border:0; font:inherit; padding:.1rem .7rem; color:var(--muted); cursor:pointer}
+.langtog button[aria-pressed="true"]{background:var(--accent-soft); color:var(--ink)}
+main{padding:1.4rem clamp(1rem,4vw,2.5rem) 4rem; max-width:1280px; margin:0 auto}
+#banner{display:none; background:var(--accent-soft); padding:.5rem 1rem; font-size:.9rem; text-align:center}
+#banner.show{display:block}
+
+h2{font-weight:500; font-size:1.35rem; margin:.2rem 0 1rem; letter-spacing:.02em}
+h3{font-weight:500; font-size:1.1rem; margin:1.2rem 0 .5rem}
+.lab{font-variant:small-caps; letter-spacing:.06em; color:var(--muted); font-size:.95rem}
+.muted{color:var(--muted)}
+.small{font-size:.88rem}
+p{margin:.4rem 0 .8rem}
+
+button.btn, label.btn{
+  font:inherit; font-size:.95rem; padding:.38rem .95rem; border-radius:6px; cursor:pointer;
+  border:1px solid var(--line); background:var(--paper); color:var(--ink); box-shadow:var(--shadow);
+  display:inline-flex; align-items:center; gap:.45rem; line-height:1.3;
+}
+button.btn:hover:not(:disabled), label.btn:hover{border-color:var(--muted)}
+button.btn.primary{background:var(--accent); border-color:var(--accent); color:var(--paper)}
+@media (prefers-color-scheme: dark){ button.btn.primary{color:#1c1b19} }
+button.btn.ghost{background:none; box-shadow:none}
+button.btn.danger{color:var(--danger)}
+button.btn:disabled{opacity:.45; cursor:default}
+button:focus-visible, textarea:focus-visible, input:focus-visible, select:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+input[type=text], input[type=url], input[type=number], input[type=search], select, textarea{
+  font:inherit; color:var(--ink); background:var(--paper); border:1px solid var(--line); border-radius:6px;
+  padding:.35rem .6rem;
+}
+select{padding-right:1.6rem}
+textarea{width:100%; resize:vertical; line-height:1.6}
+textarea.lat, .lat{font-size:1.12rem; hyphens:auto}
+input[type=number]{width:5.5rem}
+
+.stage{display:grid; grid-template-columns:minmax(0,1.05fr) minmax(0,1fr); gap:2rem; align-items:start}
+@media (max-width:900px){ .stage{grid-template-columns:1fr} }
+figure.pic{margin:0; position:sticky; top:1rem}
+@media (max-width:900px){ figure.pic{position:static} }
+figure.pic img{width:100%; max-height:78vh; object-fit:contain; background:var(--paper); border:1px solid var(--line); border-radius:4px; display:block}
+figure.pic figcaption{font-size:.9rem; color:var(--muted); margin-top:.4rem; font-style:italic}
+figure.pic figcaption b{font-style:normal; color:var(--ink)}
+.pics{display:grid; gap:1rem; position:sticky; top:1rem}
+.pics figure.pic{position:static}
+.pics figure.pic img{max-height:38vh}
+@media (max-width:900px){ .pics{position:static; grid-template-columns:1fr 1fr} .pics figure.pic img{max-height:45vh} }
+figure.pic svg.pv{width:100%; height:auto; max-height:78vh; background:var(--paper); border:1px solid var(--line); border-radius:4px; display:block}
+.pics figure.pic svg.pv{max-height:38vh}
+@media (max-width:900px){ .pics figure.pic svg.pv{max-height:45vh} }
+figure.pic figcaption{display:flex; flex-wrap:wrap; justify-content:space-between; gap:.1rem 1rem}
+.figtools{display:inline-flex; gap:.9rem; font-style:normal; font-size:.88rem}
+body.notes-off figure.pic .ann{display:none}
+/* éditeur de partes */
+.ed{position:fixed; inset:0; z-index:20; background:var(--bg); display:flex; flex-direction:column}
+.ed-bar{display:flex; flex-wrap:wrap; gap:.5rem .9rem; align-items:center; padding:.6rem 1rem; border-bottom:1px solid var(--line)}
+.ed-bar .spacer{flex:1}
+.ed-bar .btn{font-size:.9rem; padding:.28rem .7rem}
+.seg{display:inline-flex; border:1px solid var(--line); border-radius:6px; overflow:hidden; flex-wrap:wrap}
+.seg button{font:inherit; font-size:.92rem; border:0; background:var(--paper); color:var(--ink); padding:.28rem .7rem; cursor:pointer; border-right:1px solid var(--line)}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--accent); color:var(--paper)}
+@media (prefers-color-scheme: dark){ .seg button[aria-pressed="true"]{color:#1c1b19} }
+.sw{width:1.45rem; height:1.45rem; border-radius:50%; border:1px solid var(--muted); cursor:pointer; padding:0}
+.sw[aria-pressed="true"]{outline:2px solid var(--accent); outline-offset:2px}
+.dim{opacity:.35; pointer-events:none}
+.ed-emo{display:flex; flex-wrap:wrap; gap:.15rem; align-items:center; padding:.3rem 1rem; border-bottom:1px solid var(--line)}
+.ed-emo button{font-size:1.35rem; line-height:1.2; background:none; border:1px solid transparent; border-radius:6px; cursor:pointer; padding:.05rem .2rem}
+.ed-emo button[aria-pressed="true"]{border-color:var(--accent); background:var(--accent-soft)}
+.ed-hint{margin:.3rem 1rem 0; font-style:italic}
+.ed-stage{flex:1; min-height:0; position:relative; padding:.6rem 1rem}
+#edsvg{width:100%; height:100%; display:block; touch-action:none; user-select:none; -webkit-user-select:none}
+#edsvg[data-tool="arrow"], #edsvg[data-tool="text"], #edsvg[data-tool="emoji"]{cursor:crosshair}
+#edsvg [data-n]{cursor:move}
+.ed-float{position:absolute; z-index:2; min-width:14rem; transform:translate(-50%,-50%); box-shadow:0 2px 10px rgba(0,0,0,.25)}
+.ed-foot{display:flex; flex-wrap:wrap; gap:.6rem; align-items:center; padding:.6rem 1rem; border-top:1px solid var(--line)}
+.tile svg.thumb{width:100%; aspect-ratio:4/3 !important; height:auto; display:block; background:var(--bg)}
+.tile.part{border-left:3px solid var(--accent)}
+.imglist svg{width:52px; height:52px; border-radius:3px; flex:none; background:var(--paper)}
+.noimg{aspect-ratio:4/3; display:grid; place-items:center; border:1px dashed var(--line); color:var(--muted)}
+
+.meta{display:flex; flex-wrap:wrap; align-items:baseline; gap:.3rem .8rem; margin-bottom:.4rem}
+.meta .lvl{font-size:1.25rem}
+.badge{font-size:.85rem; border:1px solid var(--line); border-radius:999px; padding:.05rem .65rem; color:var(--muted); white-space:nowrap}
+.consigne{font-size:1.08rem}
+.palier-ins{color:var(--muted); font-style:italic}
+.constraint{border-left:3px solid var(--accent); padding:.3rem .9rem; margin:.8rem 0 1rem; background:var(--paper)}
+.constraint .val{font-size:1.08rem}
+.source{background:var(--paper); border:1px solid var(--line); border-radius:6px; padding:.8rem 1rem; white-space:pre-wrap; font-size:1.15rem; line-height:1.65; margin:.6rem 0}
+.source.masked{color:var(--muted); font-style:italic; text-align:center; font-size:1rem}
+.keywords-big{display:flex; flex-wrap:wrap; gap:.6rem 1.4rem; justify-content:center; font-size:1.6rem; padding:1rem; margin:.6rem 0; border:1px solid var(--line); border-radius:6px; background:var(--paper)}
+.posture{font-style:italic; color:var(--muted); text-align:center; margin:1rem 0 .6rem; font-size:1.02rem}
+.actions{display:flex; flex-wrap:wrap; gap:.6rem; margin-top:1rem; align-items:center}
+.actions .spacer{flex:1}
+
+.macrons{display:flex; flex-wrap:wrap; gap:.25rem; margin:.35rem 0 .2rem; align-items:center}
+.macrons button{font:inherit; font-size:1rem; min-width:2rem; padding:.05rem .35rem; border:1px solid var(--line); background:var(--paper); color:var(--ink); border-radius:4px; cursor:pointer}
+.macrons .hint{font-size:.8rem; color:var(--muted); margin-left:.4rem}
+
+.vocab{margin:.4rem 0 .6rem}
+.vlist{display:flex; flex-direction:column; max-height:16rem; overflow:auto; margin:.3rem 0 .5rem; border-top:1px solid var(--line)}
+.vrow{display:flex; align-items:baseline; gap:.6rem; padding:.15rem 0; border-bottom:1px solid var(--line)}
+.vins{font:inherit; font-size:1.05rem; background:none; border:0; padding:0; color:var(--accent); cursor:pointer; text-align:left}
+.vins:hover{text-decoration:underline}
+.vfr{flex:1; color:var(--ink); font-size:.95rem}
+.vdel{font:inherit; background:none; border:0; color:var(--muted); cursor:pointer; padding:0 .3rem; font-size:1.1rem}
+.vdel:hover{color:var(--danger)}
+.vadd select, .vadd input{font-size:.95rem}
+.linkish{font:inherit; background:none; border:0; padding:0; color:var(--accent); cursor:pointer; text-align:left}
+.vtable td{vertical-align:baseline}
+.chips{display:flex; flex-wrap:wrap; gap:.35rem; margin:.5rem 0}
+.chip{font:inherit; font-size:1rem; padding:.1rem .6rem; border-radius:999px; border:1px solid var(--line); background:var(--paper); color:var(--ink); cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accent); color:var(--paper); border-color:var(--accent)}
+
+.rec{display:flex; align-items:center; gap:.9rem; flex-wrap:wrap; margin:.6rem 0}
+.rec .dot{width:.7rem; height:.7rem; border-radius:50%; background:var(--danger); display:inline-block}
+.rec .sq{width:.65rem; height:.65rem; background:currentColor; display:inline-block}
+.rec.on .rec-time{color:var(--danger)}
+.rec-time{font-variant-numeric:tabular-nums; font-size:1.2rem}
+.rec-msg{color:var(--danger); font-size:.9rem}
+audio{max-width:100%; height:38px}
+
+.rating{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.5rem; margin-top:1rem}
+.rating button{flex-direction:column; justify-content:center; padding:.55rem .3rem}
+.rating .iv{font-size:.8rem; color:var(--muted)}
+.rating button.primary .iv{color:inherit; opacity:.85}
+
+.panel{background:var(--paper); border:1px solid var(--line); border-radius:8px; padding:1rem 1.2rem; margin-bottom:1.2rem}
+.row{display:flex; flex-wrap:wrap; gap:.6rem 1rem; align-items:center}
+.row > label{display:flex; flex-direction:column; gap:.15rem}
+.row > label > span{font-variant:small-caps; letter-spacing:.05em; color:var(--muted); font-size:.85rem}
+.grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:1rem}
+.tile{background:var(--paper); border:1px solid var(--line); border-radius:8px; overflow:hidden; display:flex; flex-direction:column}
+.tile img{width:100%; aspect-ratio:4/3; object-fit:cover; display:block; background:var(--bg)}
+.tile .body{padding:.6rem .8rem; display:flex; flex-direction:column; gap:.35rem; flex:1}
+.tile .t{font-weight:500; line-height:1.25}
+.tile .s{font-size:.85rem; color:var(--muted)}
+.tile .row{margin-top:auto}
+.tile textarea, .tile input{font-size:.95rem}
+
+.hist{display:grid; grid-template-columns:240px minmax(0,1fr); gap:1.6rem}
+@media (max-width:800px){ .hist{grid-template-columns:1fr} }
+.imglist{display:flex; flex-direction:column; gap:.4rem; max-height:80vh; overflow:auto}
+@media (max-width:800px){ .imglist{flex-direction:row; max-height:none; overflow-x:auto} .imglist button{min-width:180px} }
+.imglist button{display:flex; gap:.6rem; align-items:center; text-align:left; font:inherit; font-size:.92rem; padding:.35rem; border:1px solid transparent; border-radius:6px; background:none; color:var(--ink); cursor:pointer}
+.imglist button[aria-current="true"]{border-color:var(--line); background:var(--paper)}
+.imglist img{width:52px; height:52px; object-fit:cover; border-radius:3px; flex:none; background:var(--paper)}
+.sess{border-top:1px solid var(--line); padding:.9rem 0}
+.sess .head{display:flex; flex-wrap:wrap; gap:.3rem .8rem; align-items:baseline}
+.sess .date{font-weight:500}
+.sess details{margin:.4rem 0}
+.sess summary{cursor:pointer; color:var(--muted); font-size:.92rem}
+.sess .note{font-style:italic; color:var(--muted); font-size:.95rem}
+.cmp{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem}
+.cmp .panel{margin:0}
+table.cards{border-collapse:collapse; font-size:.92rem; width:100%; margin:.4rem 0 1rem}
+table.cards td, table.cards th{padding:.2rem .5rem; border-bottom:1px solid var(--line); text-align:left; font-weight:normal}
+table.cards th{color:var(--muted); font-variant:small-caps; letter-spacing:.05em}
+
+.empty{text-align:center; padding:3rem 1rem; color:var(--muted)}
+.toast{position:fixed; bottom:1.2rem; left:50%; transform:translateX(-50%); background:var(--ink); color:var(--bg); padding:.45rem 1.1rem; border-radius:6px; font-size:.95rem; opacity:0; transition:opacity .25s; pointer-events:none; z-index:10}
+.toast.show{opacity:.95}
+.hidden{display:none !important}
+</style>
+</head>
+<body class="cl-la">
+<div id="banner"></div>
+<header>
+  <h1>Progymnasmata</h1>
+  <nav id="nav">
+    <button data-v="exercitatio" title="Pratique">Exercitatio</button>
+    <button data-v="studium" title="Apprentissage">Studium</button>
+    <button data-v="imagines" title="Images">Imagines</button>
+    <button data-v="vocabula" title="Banque de vocabulaire">Vocabula</button>
+    <button data-v="historia" title="Historique">Historia</button>
+    <button data-v="optiones" title="Réglages, export, import">Optiones</button>
+  </nav>
+  <div class="langtog" title="Langue des consignes">
+    <button data-cl="la">LA</button><button data-cl="fr">FR</button>
+  </div>
+</header>
+<main id="main"></main>
+<div class="toast" id="toast"></div>
+
+<script>
+'use strict';
+/* =====================================================================
+   DONNÉES DIDACTIQUES
+   ===================================================================== */
+const ROMAN = ['','I','II','III','IV','V','VI','VII','VIII','IX'];
+
+const LEVELS = [
+  {n:1, la:'Descriptio simplex', fr:'Description simple',
+   cons:{fr:"Décris l'image en 3 à 5 phrases au présent : qui, quoi, où. Vocabulaire concret.",
+         la:"Imaginem tribus vel quinque sententiis describe, tempore praesenti: quis, quid, ubi. Verbis rerum concretarum utere."}},
+  {n:2, la:'Descriptio ornata', fr:'Description ornée',
+   cons:{fr:"Décris de nouveau l'image en l'ornant : adjectifs, relatives, connecteurs (primum, deinde, in medio, a dextra…). Ordre des mots plus libre.",
+         la:"Imaginem iterum describe, sed ornatius: adiectivis, enuntiatis relativis, particulis ordinis et loci (primum, deinde, in medio, a dextra…). Verborum ordo liberior esto."}},
+  {n:3, la:'Narratio', fr:'Narration',
+   cons:{fr:"Raconte ce qui s'est passé avant la scène, ou ce qui va suivre. Temps du passé, concordance des temps.",
+         la:"Narra quid ante hanc scaenam acciderit, aut quid deinde futurum sit. Temporibus praeteritis utere et consecutionem temporum serva."}},
+  {n:4, la:'Ethopoeia', fr:'Éthopée',
+   cons:{fr:"Fais parler un personnage de l'image : discours direct, impératif, subjonctif. Quelles paroles dirait-il ?",
+         la:"Aliquem ex iis qui in imagine sunt loquentem fac: oratione recta, imperativo, coniunctivo. Quae verba faceret?"}},
+  {n:5, la:'Copia', fr:'Copia (abondance)',
+   cons:{fr:"Choisis une phrase sur l'image et reformule-la de multiples manières, sur le modèle du De copia d'Érasme.",
+         la:"Unam de imagine sententiam elige eamque multis modis varia, more Erasmi in libro De copia."},
+   variants:[{la:'Quinque modis',fr:'De 5 manières'},{la:'Decem modis',fr:'De 10 manières'},{la:'Viginti modis',fr:'De 20 manières'}]},
+  {n:6, la:'Sententia et chria', fr:'Sentence et chrie',
+   cons:{fr:"Tire de l'image une sentence et développe-la : énoncé, cause, contraire, exemple, conclusion.",
+         la:"Sententiam ex imagine duc eamque explica: propositio, causa, contrarium, exemplum, conclusio."},
+   variantLabel:{la:'Sententia proposita (si placet)',fr:'Sentence proposée (facultatif)'},
+   variants:['Festina lente.','Labor omnia vincit.','Gutta cavat lapidem.','Omnia mutantur, nos et mutamur in illis.','Tempus edax rerum.','Ars longa, vita brevis.','Amicus certus in re incerta cernitur.','Fortes fortuna adiuvat.','Quot homines, tot sententiae.','Dum spiro, spero.','Natura non facit saltus.','Qui multum habet, plus cupit.','Nemo sine vitio nascitur.','Discit qui docet.'].map(s=>({la:s,fr:s}))},
+  {n:7, la:'Comparatio', fr:'Comparaison', pair:true,
+   cons:{fr:"Mets les deux images en regard : ressemblances, différences, puis jugement (laquelle l'emporte, et en quoi ?).",
+         la:"Duas imagines inter se confer: quid simile, quid dissimile; deinde iudica utra praestet, et qua re."},
+   variantLabel:{la:'Ratio comparandi',fr:'Angle de comparaison'},
+   variants:[{la:'Personae',fr:'Les personnages'},{la:'Loca et tempora',fr:'Les lieux et les moments'},{la:'Colores et lumen',fr:'Les couleurs et la lumière'},{la:'Motus et quies',fr:'Le mouvement et le repos'},{la:'Affectus',fr:'Les émotions'},{la:'Ars pictoris',fr:'L’art du peintre'}]},
+  {n:8, la:'Encomium et vituperatio', fr:'Éloge et blâme',
+   cons:{fr:"Loue ou blâme ce que montre l'image (personne, lieu, objet, action).",
+         la:"Lauda aut vitupera id quod imago ostendit (hominem, locum, rem, factum)."},
+   variantLabel:{la:'Modus',fr:'Mode'},
+   variants:[{la:'Lauda',fr:'Louer'},{la:'Vitupera',fr:'Blâmer'}]},
+  {n:9, la:'Thesis', fr:'Thèse',
+   cons:{fr:"Pars de l'image pour traiter une question générale (An… ?) : discute le pour et le contre, puis conclus.",
+         la:"Ab imagine profectus quaestionem generalem tracta (An…?): in utramque partem disputa, deinde conclude."},
+   variantLabel:{la:'Quaestio proposita (si placet)',fr:'Question proposée (facultatif)'},
+   variants:['An vita rustica urbanae praeferenda sit?','An ars naturam superet?','An otium negotio melius sit?','An divitiae vitam beatam efficiant?','An imagines plus quam verba doceant?','An solitudo sapienti utilis sit?','An labor ipse voluptas sit?','An consuetudo altera natura sit?','An silentium eloquentia sit?','An praeterita quam futura magis curanda sint?'].map(s=>({la:s,fr:s}))},
+];
+
+const PALIERS = {
+  a:{la:'Scribe', fr:'Écrire', ins:{fr:"Écris ton texte.", la:"Textum tuum scribe."}},
+  b:{la:'Lege voce clara', fr:'Lire à voix haute', ins:{fr:"Lis ton texte à voix haute (enregistrement).", la:"Textum tuum clara voce lege (exceptio vocis)."}},
+  c:{la:'Recita memoriter', fr:'Dire de mémoire', ins:{fr:"Relis, masque le texte, puis dis-le de mémoire.", la:"Relege, textum cela, deinde memoriter recita."}},
+  d:{la:'Ex verbis clavibus', fr:'À partir de 3 mots-clés', ins:{fr:"Choisis 3 mots-clés, masque le texte, puis parle à partir d'eux.", la:"Tria verba clavia elige, textum cela, deinde ab iis profectus dic."}},
+  e:{la:'Ex tempore', fr:'Improviser', ins:{fr:"Improvise directement à l'oral, sans écrit préalable.", la:"Ex tempore dic, nullo textu ante scripto."}},
+};
+const PALIER_KEYS = ['a','b','c','d','e'];
+
+/* Tournures obligatoires : niveaux auxquels chacune s'applique */
+const TOURNURES = [
+  ['praep-abl','Praepositiones cum ablativo (in, sub, cum, ex)','Prépositions + ablatif (in, sub, cum, ex)',[1,2]],
+  ['praep-acc','Praepositiones cum accusativo (ante, post, prope, apud, per)','Prépositions + accusatif (ante, post, prope, apud, per)',[1,2]],
+  ['est-sunt','Est / sunt ad ostendendum quid adsit','est / sunt pour dire ce qu’il y a',[1]],
+  ['et-sed','Coniunctiones et, sed, -que, neque','Coordination : et, sed, -que, neque',[1,2]],
+  ['colores','Tria adiectiva colorum aut formarum','Trois adjectifs de couleur ou de forme',[1,2]],
+  ['interrog','Sententia interrogativa (quis? quid? ubi?)','Une phrase interrogative (quis ? quid ? ubi ?)',[1]],
+  ['genetivus','Genetivus possessivus','Génitif d’appartenance',[1,2]],
+  ['numeri','Numeri (unus, duo, tres…, multi, pauci)','Nombres (unus, duo, tres…, multi, pauci)',[1]],
+  ['relativa','Duo enuntiata relativa (qui, quae, quod)','Deux relatives (qui, quae, quod)',[2,3,8]],
+  ['ordo','Particulae ordinis: primum, deinde, tum, denique','Connecteurs d’ordre : primum, deinde, tum, denique',[2,3]],
+  ['locus','Loci: in medio, a dextra, a sinistra, in fronte, in recessu','Repères spatiaux : in medio, a dextra, a sinistra, in fronte, in recessu',[2]],
+  ['hyperbaton','Hyperbaton (adiectivum a nomine separatum)','Hyperbate (adjectif séparé du nom)',[2,4,8]],
+  ['chiasmus','Chiasmus','Chiasme',[2,5,8,9]],
+  ['partic-coni','Participium coniunctum','Participe apposé',[2,3,5]],
+  ['abl-qual','Ablativus qualitatis (vir magna barba)','Ablatif de qualité (vir magna barba)',[2,8]],
+  ['comparativus','Comparativus cum quam aut ablativo','Comparatif avec quam ou ablatif',[2,7,8,9]],
+  ['hic-ille','Hic… ille… (posterior / prior)','hic… ille… (le second / le premier)',[7]],
+  ['alter-alter','Alter… alter…','Alter… alter… (l’un… l’autre…)',[7]],
+  ['tam-quam','Tam… quam… / non minus… quam…','Tam… quam… / non minus… quam…',[7]],
+  ['potius-quam','Potius quam / magis quam','Potius quam / magis quam',[7]],
+  ['ut-ita','Ut… ita… (comparatio)','Ut… ita… (comparaison)',[7]],
+  ['quidem-sed','Quidem… sed / autem','Quidem… sed / autem (concession puis opposition)',[7]],
+  ['similis','Similis / dissimilis / idem qui','Similis / dissimilis / idem qui',[7]],
+  ['non-solum','Non solum… sed etiam…','Non solum… sed etiam…',[7,8]],
+  ['cum-hist','Cum historicum (cum + coniunctivus)','Cum historicum (cum + subjonctif)',[3]],
+  ['abl-abs','Ablativus absolutus','Ablatif absolu',[3,5,6]],
+  ['perf-impf','Perfectum et imperfectum inter se distincta','Parfait et imparfait bien distingués',[3]],
+  ['plqpf','Plusquamperfectum ad rem anteriorem','Plus-que-parfait pour l’antériorité',[3]],
+  ['postquam','Postquam / ubi primum + perfectum','Postquam / ubi primum + parfait',[3]],
+  ['dum','Dum + praesens (dum haec geruntur)','Dum + présent (dum haec geruntur)',[3]],
+  ['priusquam','Antequam / priusquam','Antequam / priusquam',[3]],
+  ['fut','Futurum et futurum exactum','Futur et futur antérieur',[3,9]],
+  ['ut-finale','Ut / ne finale','Ut / ne final',[3,4,6]],
+  ['ut-consec','Ut consecutivum (tam… ut, adeo… ut)','Ut consécutif (tam… ut, adeo… ut)',[3,8]],
+  ['aci','Accusativus cum infinitivo','Proposition infinitive',[3,5,6,9]],
+  ['interrog-ind','Interrogatio indirecta (cum coniunctivo)','Interrogative indirecte (subjonctif)',[3,4,9]],
+  ['imperativus','Imperativus et vocativus','Impératif et vocatif',[4]],
+  ['adhort','Coniunctivus hortativus (eamus!)','Subjonctif d’exhortation (eamus !)',[4]],
+  ['prohib','Prohibitio: noli + infinitivus, aut ne + coniunctivus perfecti','Défense : noli + infinitif, ou ne + subj. parfait',[4]],
+  ['optativus','Coniunctivus optativus (utinam…)','Subjonctif de souhait (utinam…)',[4,8]],
+  ['irrealis','Condicio irrealis (si… esset / fuisset)','Irréel (si… esset / fuisset)',[4,6,9]],
+  ['timendi','Verba timendi (timeo ne / ne non)','Verbes de crainte (timeo ne / ne non)',[4]],
+  ['apostrophe','Apostrophe','Apostrophe',[4,8]],
+  ['interr-rhet','Interrogatio rhetorica','Question rhétorique',[4,6,8,9]],
+  ['imp-fut','Imperativus futurus (esto, facito)','Impératif futur (esto, facito)',[4]],
+  ['synonyma','Synonyma: verba commuta','Synonymes : change les mots',[5]],
+  ['act-pass','Ex activo in passivum converte','Passe de l’actif au passif',[5]],
+  ['nominal','Verbum in nomen converte, et contra','Change le verbe en nom, et inversement',[5]],
+  ['litotes','Litotes (non ignoro, haud parvus)','Litote (non ignoro, haud parvus)',[5,8]],
+  ['neg-contr','Per negationem contrarii','Par la négation du contraire',[5]],
+  ['periphrasis','Periphrasis','Périphrase',[5,8]],
+  ['gerundivum','Gerundivum / coniugatio periphrastica passiva','Adjectif verbal / périphrastique passive',[5,6,9]],
+  ['gerundium','Gerundium (ars dicendi, ad discendum)','Gérondif (ars dicendi, ad discendum)',[5,6]],
+  ['supinum','Supinum (venit spectatum; mirabile dictu)','Supin (venit spectatum ; mirabile dictu)',[5]],
+  ['concessio','Concessio: quamquam / quamvis / licet','Concession : quamquam / quamvis / licet',[6,9]],
+  ['causa','Causa: quod / quia / quoniam / cum causale','Cause : quod / quia / quoniam / cum causal',[6,9]],
+  ['exemplum','Exemplum historicum (ut olim…)','Exemple historique (ut olim…)',[6,8,9]],
+  ['qui-finalis','Relativa finalis (qui + coniunctivus)','Relative finale (qui + subjonctif)',[6]],
+  ['quin','Non dubito quin…','Non dubito quin…',[6,9]],
+  ['tricolon','Tricolon crescens','Tricolon croissant',[6,8,9]],
+  ['anaphora','Anaphora','Anaphore',[6,8,9]],
+  ['superlativus','Superlativus et amplificatio','Superlatif et amplification',[8]],
+  ['praeteritio','Praeteritio (omitto…, non dico…)','Prétérition (omitto…, non dico…)',[8,9]],
+  ['exclamatio','Exclamatio (o + accusativus; quam…!)','Exclamation (o + accusatif ; quam… !)',[8]],
+  ['antithesis','Antithesis','Antithèse',[7,8,9]],
+  ['oratio-obl','Oratio obliqua (refer quid alii censeant)','Discours indirect (rapporte l’avis d’autrui)',[9]],
+  ['utrum-an','Utrum… an…','Utrum… an…',[9]],
+  ['nonne-num','Nonne / num','Nonne / num',[9]],
+  ['refutatio','Refutatio: at enim…, immo…','Réfutation : at enim…, immo…',[9]],
+  ['conclusio','Conclusio: itaque, igitur, quae cum ita sint','Conclusion : itaque, igitur, quae cum ita sint',[6,9]],
+].map(([id,la,fr,levels])=>({id,la,fr,levels}));
+const TOUR = Object.fromEntries(TOURNURES.map(t=>[t.id,t]));
+
+const PRESENCE = [
+  {fr:"Le souffle était-il libre ?", la:"Liberne erat spiritus?"},
+  {fr:"Où était l'attention ?", la:"Ubi erat animus intentus?"},
+  {fr:"Les épaules sont-elles restées relâchées ?", la:"Manseruntne umeri remissi?"},
+  {fr:"L'expiration allait-elle jusqu'au bout ?", la:"Pervenitne exspiratio ad finem?"},
+  {fr:"Regardais-tu l'image en parlant, ou ailleurs ?", la:"Imaginemne inter dicendum aspiciebas, an alio?"},
+  {fr:"D'où venait la voix : du bas du corps ou de la gorge ?", la:"Unde oriebatur vox: ex imo corpore an e faucibus?"},
+  {fr:"Y a-t-il eu un instant de vraie présence ? Lequel ?", la:"Fuitne momentum aliquod verae praesentiae? Quod?"},
+  {fr:"Qu'est-ce qui a détourné l'attention ?", la:"Quid animum avocavit?"},
+];
+const POSTURE = {fr:"Assise d'aplomb, épaules relâchées, laisser l'expiration aller jusqu'au bout.",
+                 la:"Sede ad perpendiculum, umeris remissis; exspiratio ad finem perveniat."};
+
+const REGISTERS = {
+  classicus:{la:'Latinitas classica', fr:'latin classique (Cicéron, César, Virgile)'},
+  serus:{la:'Latinitas sera', fr:'latin tardif (Augustin, Jérôme, Boèce)'},
+  medius:{la:'Latinitas medii aevi', fr:'latin médiéval (Bède, Bernard de Clairvaux, Thomas d’Aquin)'},
+};
+const RATINGS = [
+  {r:1, la:'Rursus', fr:'À revoir'},
+  {r:2, la:'Difficile', fr:'Difficile'},
+  {r:3, la:'Bene', fr:'Bien'},
+  {r:4, la:'Facile', fr:'Facile'},
+];
+
+/* =====================================================================
+   OUTILS
+   ===================================================================== */
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => [...r.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,8);
+const bi = (fr, la) => `<span class="bi"><span class="fr" lang="fr">${fr}</span><span class="la" lang="la">${la}</span></span>`;
+const biO = o => bi(esc(o.fr), esc(o.la));
+const DAY = 864e5;
+const todayStr = () => { const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; };
+const fmtDate = ts => { try{ return new Date(ts).toLocaleString('fr-FR',{dateStyle:'medium',timeStyle:'short'}); }catch(e){ return new Date(ts).toISOString(); } };
+const fmtDay = ts => { try{ return new Date(ts).toLocaleDateString('fr-FR',{dateStyle:'medium'}); }catch(e){ return ''; } };
+const fmtDur = ms => { const s=Math.round(ms/1000); return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`; };
+const pick = arr => arr[Math.floor(Math.random()*arr.length)];
+function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove('show'),2200); }
+function banner(msg){ const b=$('#banner'); b.textContent=msg; b.classList.add('show'); }
+
+/* =====================================================================
+   STOCKAGE (IndexedDB, repli en mémoire)
+   ===================================================================== */
+const STORES = ['images','cards','sessions','audio','kv'];
+const DB = {
+  db:null, mem:null,
+  useMem(){ this.mem={}; STORES.forEach(s=>this.mem[s]=new Map()); banner("Memoria localis (IndexedDB) non praesto est : data tantum ad tempus servantur. Exporta antequam paginam claudis."); },
+  open(){
+    return new Promise(res=>{
+      try{
+        if(!('indexedDB' in window)){ this.useMem(); return res(false); }
+        const rq = indexedDB.open('progymnasmata', 1);
+        rq.onupgradeneeded = () => { const d=rq.result; STORES.forEach(s=>{ if(!d.objectStoreNames.contains(s)) d.createObjectStore(s,{keyPath:'id'}); }); };
+        rq.onsuccess = () => { this.db=rq.result; res(true); };
+        rq.onerror = () => { this.useMem(); res(false); };
+        rq.onblocked = () => { this.useMem(); res(false); };
+      }catch(e){ this.useMem(); res(false); }
+    });
+  },
+  _tx(store, mode, fn){
+    return new Promise((res,rej)=>{
+      try{
+        const t=this.db.transaction(store,mode), st=t.objectStore(store); const r=fn(st);
+        t.oncomplete=()=>res(r && 'result' in r ? r.result : undefined);
+        t.onerror=()=>rej(t.error); t.onabort=()=>rej(t.error);
+      }catch(e){ rej(e); }
+    });
+  },
+  async get(s,k){ if(this.mem) return this.mem[s].get(k); try{ return await this._tx(s,'readonly',st=>st.get(k)); }catch(e){ console.warn(e); return undefined; } },
+  async all(s){ if(this.mem) return [...this.mem[s].values()]; try{ return await this._tx(s,'readonly',st=>st.getAll()) || []; }catch(e){ console.warn(e); return []; } },
+  async put(s,v){ if(this.mem){ this.mem[s].set(v.id,v); return true; } try{ await this._tx(s,'readwrite',st=>{ st.put(v); }); return true; }catch(e){ console.warn(e); toast('Servari non potuit : '+(e && e.name || e)); return false; } },
+  async putMany(s,arr){ if(this.mem){ arr.forEach(v=>this.mem[s].set(v.id,v)); return true; } try{ await this._tx(s,'readwrite',st=>{ arr.forEach(v=>st.put(v)); }); return true; }catch(e){ console.warn(e); toast('Servari non potuit : '+(e && e.name || e)); return false; } },
+  async del(s,k){ if(this.mem){ this.mem[s].delete(k); return true; } try{ await this._tx(s,'readwrite',st=>{ st.delete(k); }); return true; }catch(e){ console.warn(e); return false; } },
+  async clearAll(){ for(const s of STORES){ if(this.mem) this.mem[s].clear(); else { try{ await this._tx(s,'readwrite',st=>{ st.clear(); }); }catch(e){ console.warn(e); } } } },
+};
+
+/* État en mémoire */
+const S = { images:[], cards:new Map(), sessions:[], settings:null };
+const DEFAULT_SETTINGS = { id:'settings', maxLevel:1, newPerDay:5, consLang:'la', register:'classicus', timerSec:90, newToday:{date:'',count:0} };
+const saveSettings = () => DB.put('kv', S.settings);
+const imgById = id => S.images.find(i=>i.id===id);
+/* Partes (détails) : images recadrées et annotées, qui renvoient à l'image principale (parentId) sans la dupliquer. */
+const rootOf = img => (img && img.parentId) ? (imgById(img.parentId) || null) : img;
+const childrenOf = id => S.images.filter(i=>i.parentId===id).sort((a,b)=>(a.addedAt||0)-(b.addedAt||0));
+function imagesOrdered(newestFirst=false){
+  const roots=S.images.filter(i=>!i.parentId || !imgById(i.parentId)).sort((a,b)=>newestFirst ? (b.addedAt||0)-(a.addedAt||0) : (a.addedAt||0)-(b.addedAt||0));
+  return roots.flatMap(r=>[r, ...childrenOf(r.id)]);
+}
+const imgOptLabel = i => (i.parentId?'↳ ':'')+(i.title||'Sine titulo').slice(0,60);
+
+/* URLs d'objets pour images et sons */
+const objURLs = new Map();
+function imgSrc(img){
+  if(!img) return '';
+  if(img.parentId){ const r=imgById(img.parentId); return r && !r.parentId ? imgSrc(r) : ''; }
+  if(img.blob){ if(!objURLs.has(img.id)) { try{ objURLs.set(img.id, URL.createObjectURL(img.blob)); }catch(e){ return img.url||''; } } return objURLs.get(img.id); }
+  return img.url || '';
+}
+async function hydrateAudio(root){
+  for(const a of $$('audio[data-audio]', root)){
+    const id=a.dataset.audio; const key='a:'+id;
+    if(!objURLs.has(key)){ const rec=await DB.get('audio',id); if(!rec || !rec.blob) { a.replaceWith(Object.assign(document.createElement('span'),{className:'muted small',textContent:'(sonus deest)'})); continue; } objURLs.set(key, URL.createObjectURL(rec.blob)); }
+    a.src = objURLs.get(key);
+  }
+}
+
+/* =====================================================================
+   RÉPÉTITION ESPACÉE (SM-2 simplifié)
+   ===================================================================== */
+function schedule(card, r, now=Date.now()){
+  let {ease=2.5, interval=0, reps=0, lapses=0} = card;
+  let due;
+  if(r===1){ reps=0; lapses++; ease=Math.max(1.3, ease-0.2); interval=0; due=now+10*60e3; }
+  else{
+    if(r===2){ ease=Math.max(1.3, ease-0.15); interval = reps===0 ? 1 : Math.max(interval+1, Math.round(interval*1.2)); }
+    else if(r===3){ interval = reps===0 ? 1 : reps===1 ? 3 : Math.max(interval+1, Math.round(interval*ease)); }
+    else { interval = reps===0 ? 3 : Math.max(interval+2, Math.round(Math.max(interval,1)*ease*1.3)); ease += 0.15; }
+    reps++; due = now + interval*DAY - 2*3600e3;
+  }
+  return {...card, ease, interval, reps, lapses, due, lastReview:now};
+}
+const ivLabel = (card, r) => { const c=schedule(card,r); if(r===1) return '10 min.'; const d=c.interval; return d<31 ? `${d} d.` : d<365 ? `${Math.round(d/30)} mens.` : `${(d/365).toFixed(1)} ann.`; };
+
+const levelUsable = l => !l.pair || S.images.length>=2;
+function activeLevels(){ const m=S.settings.maxLevel; return LEVELS.filter(l=>l.n<=m && levelUsable(l)).map(l=>l.n); }
+function drawPartner(imageId, avoidId){
+  const others=S.images.filter(i=>i.id!==imageId); if(!others.length) return null;
+  const o2=others.filter(i=>i.id!==avoidId); return pick(o2.length?o2:others);
+}
+function cardFor(imageId, level){
+  const id=`${imageId}|${level}`;
+  return S.cards.get(id) || {id, imageId, level, ease:2.5, interval:0, reps:0, lapses:0, due:0, isNew:true};
+}
+function allCards(){
+  const out=[]; const lv=activeLevels();
+  for(const img of S.images) for(const l of lv) out.push(cardFor(img.id,l));
+  return out;
+}
+function newLeftToday(){ const nt=S.settings.newToday; return Math.max(0, S.settings.newPerDay - (nt.date===todayStr()?nt.count:0)); }
+function queueInfo(exclude=new Set()){
+  const now=Date.now(); const cards=allCards().filter(c=>!exclude.has(c.id));
+  const due=cards.filter(c=>!c.isNew && c.due<=now).sort((a,b)=>a.due-b.due);
+  const fresh=cards.filter(c=>c.isNew).sort((a,b)=>a.level-b.level || ((imgById(a.imageId)?.addedAt||0)-(imgById(b.imageId)?.addedAt||0)));
+  const later=cards.filter(c=>!c.isNew && c.due>now).sort((a,b)=>a.due-b.due);
+  return {due, fresh, later};
+}
+function pickNext(exclude, lastImageId, force=false){
+  const {due, fresh, later} = queueInfo(exclude);
+  const prefer = list => list.find(c=>c.imageId!==lastImageId) || list[0];
+  if(due.length) return prefer(due);
+  if(fresh.length && newLeftToday()>0) return prefer(fresh);
+  if(force){ if(later.length) return later[0]; if(fresh.length) return prefer(fresh); }
+  return null;
+}
+function drawTournure(level, avoidId){
+  const pool=TOURNURES.filter(t=>t.levels.includes(level));
+  if(!pool.length) return null;
+  const p2=pool.filter(t=>t.id!==avoidId); return pick(p2.length?p2:pool);
+}
+function drawVariant(level){ const L=LEVELS[level-1]; return L.variants ? pick(L.variants) : null; }
+
+/* =====================================================================
+   SAISIE DES MACRONS
+   ===================================================================== */
+const MACRON = {a:'ā',e:'ē',i:'ī',o:'ō',u:'ū',y:'ȳ',A:'Ā',E:'Ē',I:'Ī',O:'Ō',U:'Ū',Y:'Ȳ'};
+function macronBar(forId){
+  return `<div class="macrons" data-for="${forId}">${['ā','ē','ī','ō','ū','ȳ','Ā','Ē','Ī','Ō','Ū'].map(c=>`<button type="button" tabindex="-1" data-ch="${c}">${c}</button>`).join('')}<span class="hint">vel: a= → ā</span></div>`;
+}
+document.addEventListener('click', e=>{
+  const b=e.target.closest('.macrons button[data-ch]'); if(!b) return;
+  const ta=document.getElementById(b.closest('.macrons').dataset.for); if(!ta || ta.disabled) return;
+  const s=ta.selectionStart ?? ta.value.length, en=ta.selectionEnd ?? s;
+  ta.setRangeText(b.dataset.ch, s, en, 'end'); ta.focus(); ta.dispatchEvent(new Event('input',{bubbles:true}));
+});
+document.addEventListener('keydown', e=>{
+  const ta=e.target; if(!(ta instanceof HTMLTextAreaElement || ta instanceof HTMLInputElement) || !ta.classList.contains('lat')) return;
+  if(e.key!=='=' || e.ctrlKey || e.metaKey || e.altKey) return;
+  const s=ta.selectionStart; if(s!==ta.selectionEnd || s===0) return;
+  const prev=ta.value[s-1]; if(!MACRON[prev]) return;
+  e.preventDefault(); ta.setRangeText(MACRON[prev], s-1, s, 'end'); ta.dispatchEvent(new Event('input',{bubbles:true}));
+});
+
+/* =====================================================================
+   ENREGISTREUR (MediaRecorder)
+   ===================================================================== */
+const activeRecs = new Set();
+function stopAllRecorders(){ activeRecs.forEach(r=>r.abort()); activeRecs.clear(); }
+function pickMime(){
+  if(typeof MediaRecorder==='undefined' || !MediaRecorder.isTypeSupported) return '';
+  return ['audio/webm;codecs=opus','audio/webm','audio/mp4','audio/ogg;codecs=opus'].find(m=>{ try{ return MediaRecorder.isTypeSupported(m); }catch(e){ return false; } }) || '';
+}
+class Recorder{
+  constructor(el, opts={}){ this.el=el; this.o=opts; this.state='idle'; this.blob=null; this.url=null; activeRecs.add(this); this.render(); }
+  render(){
+    const e=this.el; if(!e) return;
+    if(this.state==='idle') e.innerHTML=`<div class="rec"><button type="button" class="btn" data-a="start"><span class="dot"></span> Incipe exceptionem</button><span class="rec-msg"></span></div>`;
+    else if(this.state==='rec') e.innerHTML=`<div class="rec on"><button type="button" class="btn" data-a="stop"><span class="sq"></span> Siste</button><span class="rec-time">${this.limit?fmtDur(this.limit):'0:00'}</span>${this.limit?'<span class="muted small">reliquum</span>':''}</div>`;
+    else e.innerHTML=`<div class="rec done"><audio controls src="${this.url}"></audio><button type="button" class="btn ghost" data-a="redo" title="Effacer et recommencer">Dele et iterum</button></div>`;
+    $$('[data-a]', e).forEach(b=>b.onclick=()=>this[b.dataset.a]());
+  }
+  msg(t){ const m=$('.rec-msg', this.el); if(m) m.textContent=t; }
+  async start(){
+    if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || typeof MediaRecorder==='undefined'){ this.msg('Hic navigator vocem excipere non potest.'); return; }
+    try{ this.stream = await navigator.mediaDevices.getUserMedia({audio:true}); }
+    catch(err){ this.msg('Microphonum non praesto ('+(err && err.name || err)+').'); return; }
+    if(this.aborted){ this.stream.getTracks().forEach(t=>t.stop()); return; }
+    const mime=pickMime();
+    try{ this.mr = mime ? new MediaRecorder(this.stream,{mimeType:mime}) : new MediaRecorder(this.stream); }
+    catch(e){ this.mr = new MediaRecorder(this.stream); }
+    this.chunks=[];
+    this.mr.ondataavailable = ev => { if(ev.data && ev.data.size) this.chunks.push(ev.data); };
+    this.mr.onstop = () => {
+      try{ this.stream.getTracks().forEach(t=>t.stop()); }catch(e){}
+      clearInterval(this.tick);
+      if(this.aborted) return;
+      this.blob = new Blob(this.chunks, {type: this.mr.mimeType || mime || 'audio/webm'});
+      this.dur = Date.now()-this.t0; this.url = URL.createObjectURL(this.blob);
+      this.state='done'; this.render(); this.o.onChange && this.o.onChange(this.blob, this.dur);
+    };
+    this.limit = (this.o.getTimer ? this.o.getTimer() : 0) * 1000;
+    this.mr.start(1000); this.t0=Date.now(); this.state='rec'; this.render();
+    this.tick = setInterval(()=>{
+      const el=Date.now()-this.t0; const t=$('.rec-time', this.el);
+      if(t) t.textContent = this.limit ? fmtDur(Math.max(0,this.limit-el)) : fmtDur(el);
+      if(this.limit && el>=this.limit) this.stop();
+    }, 250);
+  }
+  stop(){ try{ if(this.mr && this.mr.state!=='inactive') this.mr.stop(); }catch(e){ console.warn(e); } }
+  redo(){ if(this.url) URL.revokeObjectURL(this.url); this.blob=null; this.url=null; this.state='idle'; this.render(); this.o.onChange && this.o.onChange(null,0); }
+  abort(){ this.aborted=true; clearInterval(this.tick); this.stop(); if(this.stream){ try{ this.stream.getTracks().forEach(t=>t.stop()); }catch(e){} } }
+}
+
+/* =====================================================================
+   NAVIGATION
+   ===================================================================== */
+let VIEW='exercitatio';
+const VIEWS = {};
+function go(v){
+  stopAllRecorders(); VIEW=v;
+  $$('#nav button').forEach(b=>b.setAttribute('aria-current', String(b.dataset.v===v)));
+  const m=$('#main'); m.innerHTML=''; window.scrollTo(0,0);
+  try{ VIEWS[v](m); }catch(e){ console.error(e); m.innerHTML=`<p class="empty">Error: ${esc(e.message)}</p>`; }
+}
+$('#nav').addEventListener('click', e=>{ const b=e.target.closest('button[data-v]'); if(b) go(b.dataset.v); });
+function setConsLang(l){
+  S.settings.consLang=l; saveSettings();
+  document.body.classList.toggle('cl-fr', l==='fr'); document.body.classList.toggle('cl-la', l==='la');
+  $$('.langtog button').forEach(b=>b.setAttribute('aria-pressed', String(b.dataset.cl===l)));
+}
+$('.langtog').addEventListener('click', e=>{ const b=e.target.closest('button[data-cl]'); if(b) setConsLang(b.dataset.cl); });
+window.addEventListener('beforeunload', e=>{ if([...activeRecs].some(r=>r.state==='rec')){ e.preventDefault(); e.returnValue=''; } });
+
+/* ---------- Annotations (coordonnées en pixels de l'image principale) ---------- */
+const ED_COLORS=['#d7263d','#f4c430','#ffffff','#111111','#1e6fd9','#2e9e4f'];
+const ED_LIGHT=new Set(['#f4c430','#ffffff']);
+const ED_SIZES=[{k:.6,la:'parva'},{k:1,la:'media'},{k:1.5,la:'magna'},{k:2.3,la:'maxima'}];
+const EMOJIS='👀 👁️ ❗ ❓ ⭐ ✨ ❤️ 💔 😀 😄 😢 😠 😮 😱 😴 🤔 😇 👉 👈 👆 👇 ✋ 👏 🙏 🔥 💧 ☀️ 🌙 ⚡ ❄️ 🌳 🌸 🐎 🐕 🐦 🐟 🏛️ 🏠 ⛵ ⚔️ 🛡️ 👑 🍷 🍞 🎵 💬 🔍 ✔️ ✖️'.split(' ');
+const r1 = n => Math.round(n*10)/10;
+function annOne(a){
+  const halo = ED_LIGHT.has(a.c) ? 'rgba(0,0,0,.55)' : 'rgba(255,255,255,.85)';
+  if(a.t==='arrow'){
+    const s=a.u*0.7*a.k, L=Math.hypot(a.x2-a.x1, a.y2-a.y1)||1, ux=(a.x2-a.x1)/L, uy=(a.y2-a.y1)/L;
+    const hl=Math.min(L*0.6, s*4.5), hw=s*2.4, bx=a.x2-ux*hl, by=a.y2-uy*hl, px=-uy, py=ux;
+    const ex=a.x2-ux*hl*0.7, ey=a.y2-uy*hl*0.7;
+    const shaft=`M${r1(a.x1)} ${r1(a.y1)} L${r1(ex)} ${r1(ey)}`;
+    const head=`${r1(a.x2)},${r1(a.y2)} ${r1(bx+px*hw)},${r1(by+py*hw)} ${r1(bx-px*hw)},${r1(by-py*hw)}`;
+    return `<g data-n="${a.id}"><line x1="${a.x1}" y1="${a.y1}" x2="${a.x2}" y2="${a.y2}" stroke="transparent" stroke-width="${r1(s*5)}"/>
+      <path d="${shaft}" stroke="${halo}" stroke-width="${r1(s*1.7)}" stroke-linecap="round" fill="none"/><polygon points="${head}" fill="${halo}" stroke="${halo}" stroke-width="${r1(s*.7)}" stroke-linejoin="round"/>
+      <path d="${shaft}" stroke="${a.c}" stroke-width="${r1(s)}" stroke-linecap="round" fill="none"/><polygon points="${head}" fill="${a.c}"/></g>`;
+  }
+  if(a.t==='rect' || a.t==='ellipse'){
+    const s=a.u*0.5*a.k;
+    const vis = a.nob ? '' : shapeEl(a,`fill="none" stroke="${halo}" stroke-width="${r1(s*1.8)}"`)+shapeEl(a,`fill="none" stroke="${a.c}" stroke-width="${r1(s)}"`);
+    return `<g data-n="${a.id}">${shapeEl(a,`fill="none" stroke="transparent" stroke-width="${r1(s*5)}"`)}${vis}</g>`;
+  }
+  const emoji=a.t==='emoji', fs=r1(a.u*(emoji?8:4.5)*a.k);
+  return `<g data-n="${a.id}"><text x="${r1(a.x)}" y="${r1(a.y)}" font-size="${fs}" text-anchor="middle" dominant-baseline="central" ${emoji?'':`fill="${a.c}" stroke="${halo}" stroke-width="${r1(fs*.14)}" stroke-linejoin="round" paint-order="stroke" font-family="EB Garamond, Palatino, Georgia, serif" font-weight="600"`}>${esc(a.txt)}</text></g>`;
+}
+function shapeEl(a, attrs){
+  return a.t==='ellipse'
+    ? `<ellipse cx="${r1(a.x+a.w/2)}" cy="${r1(a.y+a.h/2)}" rx="${r1(a.w/2)}" ry="${r1(a.h/2)}" ${attrs}/>`
+    : `<rect x="${r1(a.x)}" y="${r1(a.y)}" width="${r1(a.w)}" height="${r1(a.h)}" rx="${r1(a.u*0.4)}" ${attrs}/>`;
+}
+/* Les cadres « spot » laissent leur contenu intact et assombrissent tout le reste (masque SVG). */
+let MASKN=0;
+function annMarkup(notes, W=1, H=1){
+  notes=notes||[];
+  const spots=notes.filter(a=>a.spot && (a.t==='rect'||a.t==='ellipse'));
+  let h='';
+  if(spots.length){
+    const id='spm'+(++MASKN), box=`x="${-W}" y="${-H}" width="${3*W}" height="${3*H}"`;
+    h=`<mask id="${id}" maskUnits="userSpaceOnUse" ${box}><rect ${box} fill="#fff"/>${spots.map(a=>shapeEl(a,'fill="#000"')).join('')}</mask>
+      <rect ${box} fill="rgba(0,0,0,.62)" mask="url(#${id})" pointer-events="none"/>`;
+  }
+  return h + notes.map(annOne).join('');
+}
+
+/* Rendu d'une pars : SVG dont le viewBox est le recadrage ; le <svg> imbriqué coupe ce qui déborde. */
+function partSVG(img, cls, fit='meet', style=''){
+  const src=imgSrc(img), W=img.W||1, H=img.H||1, c=img.crop||{x:0,y:0,w:W,h:H};
+  const vb=`${r1(c.x)} ${r1(c.y)} ${r1(c.w)} ${r1(c.h)}`;
+  return `<svg class="${cls}" viewBox="${vb}" preserveAspectRatio="xMidYMid ${fit}" role="img" aria-label="${esc(img.title||'')}" style="aspect-ratio:${r1(c.w)}/${r1(c.h)};${style}">
+    <svg x="${r1(c.x)}" y="${r1(c.y)}" width="${r1(c.w)}" height="${r1(c.h)}" viewBox="${vb}">${src?`<image href="${esc(src)}" x="0" y="0" width="${W}" height="${H}"/>`:''}<g class="ann">${annMarkup(img.notes, W, H)}</g></svg></svg>`;
+}
+function thumbHTML(img, cls='', style=''){
+  if(img && img.parentId) return partSVG(img, cls, 'slice', style);
+  return `<img src="${esc(imgSrc(img))}" alt="" loading="lazy" class="${cls}" style="${style}">`;
+}
+function figureHTML(img, lab=''){
+  if(!img) return `<figure class="pic"><div class="noimg">—</div></figure>`;
+  const src=imgSrc(img), hasN=(img.notes||[]).length>0;
+  const body = !src ? '<div class="noimg">—</div>'
+    : img.parentId ? partSVG(img,'pv')
+    : `<img src="${esc(src)}" alt="${esc(img.title)}" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'noimg',textContent:'Imago non invenitur'}))">`;
+  return `<figure class="pic" data-img="${img.id}" data-lab="${lab}">${body}
+    <figcaption><span>${lab?`<b>${lab}.</b> `:''}${esc(img.title||'Sine titulo')}${img.source?' — '+esc(img.source):''}</span>
+      <span class="figtools">${hasN?`<button type="button" class="linkish" data-anntog title="Afficher / masquer flèches, textes et émoticônes">${S.settings.hideNotes?'Ostende notas':'Cela notas'}</button>`:''}<button type="button" class="linkish" data-ed="${img.id}" title="Recadrer sur un détail, ajouter flèches, texte, émoticônes">Recide · nota</button></span></figcaption></figure>`;
+}
+function pairHTML(a, b){ return `<div class="pics">${figureHTML(a,'A')}${figureHTML(b,'B')}</div>`; }
+function refreshFigures(id){ const img=imgById(id); $$(`figure.pic[data-img="${id}"]`).forEach(f=>{ f.outerHTML=figureHTML(img, f.dataset.lab||''); }); }
+function setNotesHidden(h){
+  S.settings.hideNotes=h; saveSettings(); document.body.classList.toggle('notes-off', h);
+  $$('[data-anntog]').forEach(b=>b.textContent=h?'Ostende notas':'Cela notas');
+}
+document.addEventListener('click', e=>{
+  const ed=e.target.closest('[data-ed]'); if(ed){ openEditor(ed.dataset.ed); return; }
+  if(e.target.closest('[data-anntog]')) setNotesHidden(!S.settings.hideNotes);
+});
+
+/* =====================================================================
+   ÉDITEUR : recadrage + flèches, texte, émoticônes
+   ===================================================================== */
+let ED=null;
+function openEditor(id){
+  const img=imgById(id); if(!img) return;
+  const root=rootOf(img); if(!root){ toast('Imago principalis deest.'); return; }
+  const src=imgSrc(root); if(!src){ toast('Imago non praesto.'); return; }
+  const pic=new Image();
+  pic.onload=()=>startEditor(img, root, src, pic.naturalWidth, pic.naturalHeight);
+  pic.onerror=()=>toast('Imago legi non potest.');
+  pic.src=src;
+}
+function startEditor(target, root, src, nw, nh){
+  const isPart=!!target.parentId;
+  const W=isPart&&target.W?target.W:nw, H=isPart&&target.H?target.H:nh;
+  ED={ target, root, src, W, H, isPart,
+    crop: isPart&&target.crop ? {...target.crop} : {x:0,y:0,w:W,h:H},
+    notes: isPart ? JSON.parse(JSON.stringify(target.notes||[])) : [],
+    tool: isPart ? 'sel' : 'crop', color:ED_COLORS[0], k:1, emoji:EMOJIS[0], spot:false, nob:false, sel:null, undo:[], drag:null,
+    title: isPart ? target.title : `${root.title||'Sine titulo'} (pars ${childrenOf(root.id).length+1})` };
+  const el=document.createElement('div'); el.className='ed'; el.id='ed';
+  el.innerHTML=`
+    <div class="ed-bar">
+      <div class="seg" id="edtools">
+        <button data-tool="crop" title="Recadrer : tracer ou ajuster le cadre">✂︎ Recide</button>
+        <button data-tool="sel" title="Sélectionner, déplacer ; double-clic sur un texte pour le modifier">Selige</button>
+        <button data-tool="arrow" title="Flèche : glisser du départ à la pointe">➚ Sagitta</button>
+        <button data-tool="rect" title="Cadre : glisser d'un coin à l'autre (Maj : carré)">▭ Quadrum</button>
+        <button data-tool="ellipse" title="Cercle : glisser d'un coin à l'autre (Maj : cercle parfait)">◯ Circulus</button>
+        <button data-tool="text" title="Texte : cliquer à l'endroit voulu">T Textus</button>
+        <button data-tool="emoji" title="Émoticône : choisir puis cliquer sur l'image">☺ Signum</button>
+      </div>
+      <div class="row" id="edcolors" style="gap:.35rem">${ED_COLORS.map(c=>`<button class="sw" data-c="${c}" style="background:${c}" title="${c}"></button>`).join('')}</div>
+      <div class="seg" id="edsizes">${ED_SIZES.map(s=>`<button data-k="${s.k}">${s.la}</button>`).join('')}</div>
+      <div class="seg hidden" id="edframe">
+        <button data-f="spot" title="Le contenu du cadre reste net, le reste de l'image est assombri">◐ Obscura cetera</button>
+        <button data-f="nob" title="Ne pas tracer le bord du cadre">Sine margine</button>
+      </div>
+      <span class="spacer"></span>
+      <button class="btn ghost" id="edfull" title="Revenir à l'image entière">Tota imago</button>
+      <button class="btn ghost" id="edundo" title="Annuler (⌘Z)">↶ Retro</button>
+      <button class="btn ghost danger" id="eddel" title="Supprimer l'élément sélectionné (Suppr)">Dele notam</button>
+    </div>
+    <div class="ed-emo hidden" id="edemo">${EMOJIS.map(x=>`<button data-e="${x}">${x}</button>`).join('')}
+      <input type="text" id="edemoin" placeholder="aliud…" title="Coller ou taper n'importe quel émoticône" style="width:6rem"></div>
+    <p class="ed-hint muted small"></p>
+    <div class="ed-stage" id="edstage"><svg id="edsvg" preserveAspectRatio="xMidYMid meet"></svg>
+      <input type="text" id="edtxt" class="ed-float lat hidden" lang="la" spellcheck="false" placeholder="Scribe, deinde ⏎"></div>
+    <div class="ed-foot">
+      <label class="row" style="flex:1;min-width:14rem;gap:.5rem"><span class="lab">Titulus partis</span><input type="text" id="edtitle" style="flex:1" value="${esc(ED.title)}"></label>
+      <button class="btn ghost" id="edcancel">Abi</button>
+      ${isPart?`<button class="btn" id="ednew" title="Enregistrer comme un nouveau détail, sans modifier celui-ci">Serva ut novam partem</button>
+      <button class="btn primary" id="edsave">Serva</button>`
+      :`<button class="btn primary" id="ednew" title="Le détail devient une image à part entière dans la révision">Serva ut novam partem</button>`}
+    </div>`;
+  document.body.appendChild(el); document.body.style.overflow='hidden';
+  const svg=$('#edsvg');
+  $('#edtools').onclick=e=>{ const b=e.target.closest('[data-tool]'); if(b){ edCommitText(); ED.tool=b.dataset.tool; if(ED.tool==='crop') ED.sel=null; edUI(); edDraw(); } };
+  $('#edcolors').onclick=e=>{ const b=e.target.closest('[data-c]'); if(!b) return; ED.color=b.dataset.c; const a=edSel(); if(a && a.t!=='emoji'){ edPush(); a.c=ED.color; } edUI(); edDraw(); };
+  $('#edsizes').onclick=e=>{ const b=e.target.closest('[data-k]'); if(!b) return; ED.k=+b.dataset.k; const a=edSel(); if(a){ edPush(); a.k=ED.k; } edUI(); edDraw(); };
+  $('#edframe').onclick=e=>{ const b=e.target.closest('[data-f]'); if(!b) return; const f=b.dataset.f, a=edSel();
+    if(a && isShape(a)){ edPush(); a[f]=!a[f]; ED[f]=a[f]; } else ED[f]=!ED[f]; edUI(); edDraw(); };
+  $('#edemo').onclick=e=>{ const b=e.target.closest('[data-e]'); if(!b) return; ED.emoji=b.dataset.e; const a=edSel(); if(a && a.t==='emoji'){ edPush(); a.txt=ED.emoji; } edUI(); edDraw(); };
+  $('#edemoin').oninput=e=>{ const v=e.target.value.trim(); if(v){ ED.emoji=[...v].slice(0,4).join(''); edUI(); } };
+  $('#edfull').onclick=()=>{ edPush(); ED.crop={x:0,y:0,w:ED.W,h:ED.H}; edDraw(); };
+  $('#edundo').onclick=edUndo;
+  $('#eddel').onclick=edDelSel;
+  $('#edtitle').oninput=e=>ED.title=e.target.value;
+  $('#edcancel').onclick=()=>{ if(ED.undo.length && !confirm('Abandonner les modifications ?')) return; closeEditor(); };
+  $('#ednew').onclick=()=>edSave(true);
+  $('#edsave') && ($('#edsave').onclick=()=>edSave(false));
+  svg.addEventListener('pointerdown', edDown); svg.addEventListener('pointermove', edMove);
+  svg.addEventListener('pointerup', edUp); svg.addEventListener('pointercancel', edUp);
+  svg.addEventListener('dblclick', e=>{ const g=e.target.closest('[data-n]'); const a=g && ED.notes.find(n=>n.id===g.dataset.n); if(a && a.t==='text') edOpenText(e.clientX, e.clientY, a); });
+  const txt=$('#edtxt');
+  txt.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); edCommitText(); } else if(e.key==='Escape'){ e.stopPropagation(); ED.txt=null; txt.classList.add('hidden'); } });
+  txt.addEventListener('blur', ()=>edCommitText());
+  document.addEventListener('keydown', edKey); window.addEventListener('resize', edDraw);
+  edUI(); edDraw();
+}
+function closeEditor(){
+  document.removeEventListener('keydown', edKey); window.removeEventListener('resize', edDraw);
+  const el=$('#ed'); if(el) el.remove(); document.body.style.overflow=''; ED=null;
+}
+const edSel = () => ED.sel ? ED.notes.find(n=>n.id===ED.sel) : null;
+const isShape = a => a && (a.t==='rect' || a.t==='ellipse');
+function edPush(){ ED.undo.push(JSON.stringify({crop:ED.crop, notes:ED.notes})); if(ED.undo.length>60) ED.undo.shift(); }
+function edUndo(){ const s=ED.undo.pop(); if(!s) return; const o=JSON.parse(s); ED.crop=o.crop; ED.notes=o.notes; if(!edSel()) ED.sel=null; edUI(); edDraw(); }
+function edDelSel(){ if(!ED.sel) return; edPush(); ED.notes=ED.notes.filter(n=>n.id!==ED.sel); ED.sel=null; edUI(); edDraw(); }
+function edKey(e){
+  if(!ED) return;
+  const inField = e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement;
+  if((e.metaKey||e.ctrlKey) && e.key.toLowerCase()==='z' && !inField){ e.preventDefault(); edUndo(); return; }
+  if(inField) return;
+  if((e.key==='Delete'||e.key==='Backspace') && ED.sel){ e.preventDefault(); edDelSel(); }
+  else if(e.key==='Escape'){ ED.sel=null; edUI(); edDraw(); }
+}
+const HINTS={
+  crop:'Trace un cadre sur le détail voulu ; tire les poignées pour l’ajuster, ou fais glisser le cadre.',
+  sel:'Clique sur une note pour la sélectionner et la déplacer ; double-clic sur un texte pour le modifier.',
+  arrow:'Glisse du point de départ jusqu’à la pointe de la flèche.',
+  rect:'Glisse d’un coin à l’autre (Maj pour un carré). « Obscura cetera » assombrit tout ce qui est hors du cadre ; les poignées le redimensionnent.',
+  ellipse:'Glisse d’un coin à l’autre (Maj pour un cercle). « Obscura cetera » assombrit tout ce qui est hors du cercle ; les poignées le redimensionnent.',
+  text:'Clique là où le texte doit apparaître, écris, puis Entrée.',
+  emoji:'Choisis un émoticône ci-dessus, puis clique sur l’image.'};
+function edUI(){
+  $$('#edtools [data-tool]').forEach(b=>b.setAttribute('aria-pressed', String(b.dataset.tool===ED.tool)));
+  const a=edSel(), col=a&&a.c?a.c:ED.color, k=a?a.k:ED.k;
+  $$('#edcolors [data-c]').forEach(b=>b.setAttribute('aria-pressed', String(b.dataset.c===col)));
+  $$('#edsizes [data-k]').forEach(b=>b.setAttribute('aria-pressed', String(+b.dataset.k===k)));
+  $$('#edemo [data-e]').forEach(b=>b.setAttribute('aria-pressed', String(b.dataset.e===ED.emoji)));
+  $('#edemo').classList.toggle('hidden', ED.tool!=='emoji');
+  const shapeCtx = isShape(a) || ED.tool==='rect' || ED.tool==='ellipse';
+  $('#edframe').classList.toggle('hidden', !shapeCtx || ED.tool==='crop');
+  $$('#edframe [data-f]').forEach(b=>b.setAttribute('aria-pressed', String(!!(isShape(a) ? a[b.dataset.f] : ED[b.dataset.f]))));
+  $('#edfull').classList.toggle('hidden', ED.tool!=='crop');
+  $('#eddel').disabled=!ED.sel; $('#edundo').disabled=!ED.undo.length;
+  $('#edcolors').classList.toggle('dim', ED.tool==='crop'); $('#edsizes').classList.toggle('dim', ED.tool==='crop');
+  $('.ed-hint').textContent=HINTS[ED.tool];
+  $('#edsvg').dataset.tool=ED.tool;
+}
+function edVB(){ return ED.tool==='crop' ? {x:0,y:0,w:ED.W,h:ED.H} : ED.crop; }
+function edPx(){ const svg=$('#edsvg'), r=svg.getBoundingClientRect(), vb=edVB(); return Math.max(vb.w/(r.width||1), vb.h/(r.height||1)); }
+function edDraw(){
+  if(!ED) return;
+  const svg=$('#edsvg'), vb=edVB(), c=ED.crop, crop=ED.tool==='crop', px=edPx();
+  svg.setAttribute('viewBox', `${vb.x} ${vb.y} ${vb.w} ${vb.h}`);
+  const B=1e6;
+  let h=`<image href="${esc(ED.src)}" x="0" y="0" width="${ED.W}" height="${ED.H}"/>
+    <g class="ann">${annMarkup(ED.notes, ED.W, ED.H)}</g>
+    <path d="M${-B} ${-B}H${B}V${B}H${-B}Z M${c.x} ${c.y}h${c.w}v${c.h}h${-c.w}Z" fill-rule="evenodd" fill="${crop?'rgba(0,0,0,.5)':'rgba(20,18,16,.72)'}" pointer-events="none"/>`;
+  if(crop){
+    const hs=9*px, sw=1.5*px;
+    h+=`<rect x="${c.x}" y="${c.y}" width="${c.w}" height="${c.h}" fill="transparent" stroke="#fff" stroke-width="${sw}" data-inside="1" style="cursor:move"/>`;
+    for(const k of [1,2]) h+=`<line x1="${c.x+c.w*k/3}" y1="${c.y}" x2="${c.x+c.w*k/3}" y2="${c.y+c.h}" stroke="rgba(255,255,255,.45)" stroke-width="${sw*.6}" pointer-events="none"/><line x1="${c.x}" y1="${c.y+c.h*k/3}" x2="${c.x+c.w}" y2="${c.y+c.h*k/3}" stroke="rgba(255,255,255,.45)" stroke-width="${sw*.6}" pointer-events="none"/>`;
+    const pts={nw:[c.x,c.y],n:[c.x+c.w/2,c.y],ne:[c.x+c.w,c.y],e:[c.x+c.w,c.y+c.h/2],se:[c.x+c.w,c.y+c.h],s:[c.x+c.w/2,c.y+c.h],sw:[c.x,c.y+c.h],w:[c.x,c.y+c.h/2]};
+    for(const [k,[x,y]] of Object.entries(pts)) h+=`<rect data-h="${k}" x="${x-hs/2}" y="${y-hs/2}" width="${hs}" height="${hs}" fill="#fff" stroke="#000" stroke-width="${sw*.6}" style="cursor:${k}-resize"/>`;
+  }
+  svg.innerHTML=h;
+  if(!crop && ED.sel){
+    const g=svg.querySelector(`[data-n="${ED.sel}"]`);
+    if(g){ const b=g.getBBox(), p=6*px; svg.insertAdjacentHTML('beforeend', `<rect x="${b.x-p}" y="${b.y-p}" width="${b.width+2*p}" height="${b.height+2*p}" fill="none" stroke="#fff" stroke-width="${1.5*px}" stroke-dasharray="${5*px} ${4*px}" pointer-events="none"/><rect x="${b.x-p}" y="${b.y-p}" width="${b.width+2*p}" height="${b.height+2*p}" fill="none" stroke="#000" stroke-width="${1.5*px}" stroke-dasharray="${5*px} ${4*px}" stroke-dashoffset="${5*px}" pointer-events="none"/>`); }
+    const a=edSel();
+    if(isShape(a)){
+      const hs=9*px, pts={nw:[a.x,a.y],ne:[a.x+a.w,a.y],se:[a.x+a.w,a.y+a.h],sw:[a.x,a.y+a.h],n:[a.x+a.w/2,a.y],s:[a.x+a.w/2,a.y+a.h],e:[a.x+a.w,a.y+a.h/2],w:[a.x,a.y+a.h/2]};
+      svg.insertAdjacentHTML('beforeend', Object.entries(pts).map(([k,[x,y]])=>`<rect data-rh="${k}" x="${x-hs/2}" y="${y-hs/2}" width="${hs}" height="${hs}" fill="#fff" stroke="#000" stroke-width="${px}" style="cursor:${k}-resize"/>`).join(''));
+    }
+  }
+}
+function edPt(e){
+  const svg=$('#edsvg'); const p=new DOMPoint(e.clientX, e.clientY).matrixTransform(svg.getScreenCTM().inverse());
+  return {x:p.x, y:p.y};
+}
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+function edDown(e){
+  if(e.button>0) return;
+  const svg=$('#edsvg'); const p=edPt(e); const T=ED.tool;
+  if(T==='crop'){
+    const hd=e.target.closest('[data-h]'), c=ED.crop;
+    edPush();
+    if(hd) ED.drag={k:'resize', h:hd.dataset.h, c0:{...c}};
+    else if(p.x>=c.x && p.x<=c.x+c.w && p.y>=c.y && p.y<=c.y+c.h && (c.w<ED.W*0.98 || c.h<ED.H*0.98)) ED.drag={k:'move', p0:p, c0:{...c}};
+    else ED.drag={k:'new', p0:{x:clamp(p.x,0,ED.W), y:clamp(p.y,0,ED.H)}, c0:{...c}};
+    svg.setPointerCapture(e.pointerId); return;
+  }
+  if($('#edtxt') && !$('#edtxt').classList.contains('hidden')){ edCommitText(); }
+  const rh=e.target.closest('[data-rh]'), sa=edSel();
+  if(rh && isShape(sa)){ edPush(); ED.drag={k:'rs', h:rh.dataset.rh, a0:{...sa}}; svg.setPointerCapture(e.pointerId); return; }
+  const g=e.target.closest('[data-n]');
+  if(g){
+    const a=ED.notes.find(n=>n.id===g.dataset.n);
+    if(a){ edPush(); ED.sel=a.id; ED.drag={k:'mv', p0:p, a0:{...a}, moved:false}; svg.setPointerCapture(e.pointerId); edUI(); edDraw(); return; }
+  }
+  const u=ED.crop.w/100, base={id:uid(), c:ED.color, k:ED.k, u};
+  if(T==='arrow'){ edPush(); const a={...base, t:'arrow', x1:p.x, y1:p.y, x2:p.x, y2:p.y}; ED.notes.push(a); ED.sel=a.id; ED.drag={k:'arrow', id:a.id}; svg.setPointerCapture(e.pointerId); edDraw(); }
+  else if(T==='rect' || T==='ellipse'){ edPush(); const a={...base, t:T, x:p.x, y:p.y, w:0, h:0, spot:ED.spot, nob:ED.nob}; ED.notes.push(a); ED.sel=a.id; ED.drag={k:'shape', id:a.id, p0:p}; svg.setPointerCapture(e.pointerId); edDraw(); }
+  else if(T==='text'){ ED.drag={k:'text', cx:e.clientX, cy:e.clientY, p}; }
+  else if(T==='emoji'){ edPush(); const a={...base, t:'emoji', x:p.x, y:p.y, txt:ED.emoji}; delete a.c; ED.notes.push(a); ED.sel=a.id; edUI(); edDraw(); }
+  else { ED.sel=null; edUI(); edDraw(); }
+}
+function edMove(e){
+  const d=ED && ED.drag; if(!d) return;
+  const p=edPt(e), W=ED.W, H=ED.H, m=Math.max(8, Math.min(W,H)*0.02);
+  if(d.k==='move'){ const c=d.c0; ED.crop={...c, x:clamp(c.x+p.x-d.p0.x,0,W-c.w), y:clamp(c.y+p.y-d.p0.y,0,H-c.h)}; }
+  else if(d.k==='new'){ const x=clamp(p.x,0,W), y=clamp(p.y,0,H); ED.crop={x:Math.min(x,d.p0.x), y:Math.min(y,d.p0.y), w:Math.abs(x-d.p0.x), h:Math.abs(y-d.p0.y)}; }
+  else if(d.k==='resize'){
+    let {x,y,w,h}=d.c0, x2=x+w, y2=y+h; const px=clamp(p.x,0,W), py=clamp(p.y,0,H);
+    if(d.h.includes('w')) x=Math.min(px, x2-m); if(d.h.includes('e')) x2=Math.max(px, x+m);
+    if(d.h.includes('n')) y=Math.min(py, y2-m); if(d.h.includes('s')) y2=Math.max(py, y+m);
+    ED.crop={x, y, w:x2-x, h:y2-y};
+  }
+  else if(d.k==='arrow'){ const a=ED.notes.find(n=>n.id===d.id); if(a){ a.x2=p.x; a.y2=p.y; } }
+  else if(d.k==='shape'){
+    const a=ED.notes.find(n=>n.id===d.id); if(!a) return;
+    let dx=p.x-d.p0.x, dy=p.y-d.p0.y;
+    if(e.shiftKey){ const s=Math.max(Math.abs(dx),Math.abs(dy)); dx=Math.sign(dx||1)*s; dy=Math.sign(dy||1)*s; }
+    a.x=Math.min(d.p0.x, d.p0.x+dx); a.y=Math.min(d.p0.y, d.p0.y+dy); a.w=Math.abs(dx); a.h=Math.abs(dy);
+  }
+  else if(d.k==='rs'){
+    const a=edSel(); if(!a) return; const o=d.a0, mm=o.u*2;
+    let x=o.x, y=o.y, x2=o.x+o.w, y2=o.y+o.h;
+    if(d.h.includes('w')) x=Math.min(p.x, x2-mm); if(d.h.includes('e')) x2=Math.max(p.x, x+mm);
+    if(d.h.includes('n')) y=Math.min(p.y, y2-mm); if(d.h.includes('s')) y2=Math.max(p.y, y+mm);
+    a.x=x; a.y=y; a.w=x2-x; a.h=y2-y; d.moved=true;
+  }
+  else if(d.k==='mv'){
+    const a=ED.notes.find(n=>n.id===ED.sel); if(!a) return; const dx=p.x-d.p0.x, dy=p.y-d.p0.y; d.moved=true;
+    if(a.t==='arrow'){ a.x1=d.a0.x1+dx; a.y1=d.a0.y1+dy; a.x2=d.a0.x2+dx; a.y2=d.a0.y2+dy; } else { a.x=d.a0.x+dx; a.y=d.a0.y+dy; }
+  }
+  edDraw();
+}
+function edUp(){
+  const d=ED && ED.drag; if(!d) return; ED.drag=null;
+  if(d.k==='text'){ edOpenText(d.cx, d.cy, null, d.p); return; }
+  const m=Math.max(8, Math.min(ED.W,ED.H)*0.02);
+  if(d.k==='new' && (ED.crop.w<m || ED.crop.h<m)){ ED.crop=d.c0; ED.undo.pop(); }
+  else if((d.k==='move'||d.k==='resize') && JSON.stringify(ED.crop)===JSON.stringify(d.c0)) ED.undo.pop();
+  if(d.k==='arrow'){ const a=ED.notes.find(n=>n.id===d.id); if(a && Math.hypot(a.x2-a.x1,a.y2-a.y1) < a.u*3){ ED.notes=ED.notes.filter(n=>n.id!==a.id); ED.sel=null; ED.undo.pop(); } }
+  if(d.k==='shape'){ const a=ED.notes.find(n=>n.id===d.id); if(a && (a.w<a.u*2 || a.h<a.u*2)){ ED.notes=ED.notes.filter(n=>n.id!==a.id); ED.sel=null; ED.undo.pop(); } }
+  if((d.k==='mv'||d.k==='rs') && !d.moved) ED.undo.pop();
+  edUI(); edDraw();
+}
+function edOpenText(cx, cy, existing, p){
+  const st=$('#edstage').getBoundingClientRect(), t=$('#edtxt');
+  ED.txt = existing ? {id:existing.id} : {p};
+  t.value = existing ? existing.txt : '';
+  t.style.left=(cx-st.left)+'px'; t.style.top=(cy-st.top)+'px';
+  t.classList.remove('hidden'); t.focus(); t.select();
+  requestAnimationFrame(()=>{ if(ED && ED.txt && document.activeElement!==t){ t.focus(); t.select(); } });
+}
+function edCommitText(){
+  const t=$('#edtxt'); if(!ED || !t || !ED.txt) { t && t.classList.add('hidden'); return; }
+  const v=t.value.trim(), info=ED.txt; ED.txt=null; t.classList.add('hidden');
+  if(info.id){
+    const a=ED.notes.find(n=>n.id===info.id); if(!a) return;
+    if(v!==a.txt){ edPush(); if(v) a.txt=v; else { ED.notes=ED.notes.filter(n=>n.id!==a.id); ED.sel=null; } }
+  } else if(v){
+    edPush(); const a={id:uid(), t:'text', c:ED.color, k:ED.k, u:ED.crop.w/100, x:info.p.x, y:info.p.y, txt:v}; ED.notes.push(a); ED.sel=a.id;
+  }
+  edUI(); edDraw();
+}
+async function edSave(asNew){
+  edCommitText();
+  const c=ED.crop, crop={x:r1(c.x), y:r1(c.y), w:r1(c.w), h:r1(c.h)};
+  const title=(ED.title||'').trim();
+  let img, isNew=false;
+  if(asNew || !ED.isPart){
+    const n=childrenOf(ED.root.id).length+1;
+    img={ id:uid(), parentId:ED.root.id, title: (ED.isPart && title===ED.target.title) ? `${ED.root.title||'Sine titulo'} (pars ${n})` : (title || `${ED.root.title||'Sine titulo'} (pars ${n})`),
+      source:ED.root.source||'', url:'', blob:null, vocab:'', words:[], addedAt:Date.now(), W:ED.W, H:ED.H, crop,
+      notes:ED.notes.map(a=>({...a, id:uid()})) };
+    S.images.push(img); isNew=true;
+  } else {
+    img=ED.target; img.crop=crop; img.notes=ED.notes; img.W=ED.W; img.H=ED.H; if(title) img.title=title;
+  }
+  await DB.put('images', img);
+  closeEditor();
+  toast(isNew ? 'Nova pars addita.' : 'Servatum.');
+  afterEdit(img, isNew);
+}
+function afterEdit(img, isNew){
+  if(VIEW==='exercitatio'){ if(!isNew) refreshFigures(img.id); else toast('Nova pars addita : mox in exercitatione apparebit.'); return; }
+  if(VIEW==='studium'){ if(isNew){ St.imageId=img.id; stopAllRecorders(); St.audio=null; go('studium'); } else refreshFigures(img.id); return; }
+  go(VIEW);
+}
+function headerHTML(level, palier){
+  const L=LEVELS[level-1], P_=PALIERS[palier];
+  return `<div class="meta"><span class="lvl">Gradus ${ROMAN[level]} · ${biO({fr:L.fr,la:L.la})}</span>
+      <span class="badge">${palier} · ${biO({fr:P_.fr,la:P_.la})}</span></div>
+    <p class="consigne">${biO(L.cons)}</p>
+    <p class="palier-ins">${biO(P_.ins)}</p>`;
+}
+function constraintHTML(level, tour, variant){
+  const L=LEVELS[level-1]; let h='';
+  if(tour) h+=`<div class="constraint"><div class="lab">${bi('Tournure obligatoire','Forma necessaria')}</div><div class="val">${biO(tour)}</div></div>`;
+  if(variant) h+=`<div class="constraint"><div class="lab">${L.variantLabel?biO(L.variantLabel):bi('Variante','Modus')}</div><div class="val">${biO(variant)}</div></div>`;
+  return h;
+}
+const textHTML = t => esc(t);
+const posture = () => `<p class="posture">${biO(POSTURE)}</p>`;
+function wordsOf(t){ const seen=new Set(), out=[]; for(const w of (t.match(/\p{L}+/gu)||[])){ const k=w.toLowerCase(); if(w.length>=3 && !seen.has(k)){ seen.add(k); out.push(w); } } return out; }
+
+/* =====================================================================
+   VUE : EXERCITATIO (mode pratique, file espacée)
+   ===================================================================== */
+let P=null;                // état de la carte en cours
+const skipped=new Set();   // cartes passées pendant cette visite
+let lastImageId=null;
+
+function buildPractice(card){
+  let p = PALIER_KEYS[Math.min(card.reps,4)];
+  if('bcd'.includes(p) && !card.lastText) p='a';
+  let partner = null;
+  if(LEVELS[card.level-1].pair){
+    if('bcd'.includes(p)) partner = imgById(card.partnerId) || null;
+    if('bcd'.includes(p) && !partner) p='a';
+    if(!partner) partner = drawPartner(card.imageId, card.partnerId);
+  }
+  let tour, variant;
+  if('bcd'.includes(p)){ tour = TOUR[card.lastTournure] || null; variant = card.lastVariant || null; }
+  else { tour = drawTournure(card.level, card.lastTournure); variant = drawVariant(card.level); }
+  return {card, palier:p, tour, variant, partner, src: card.lastText || '', text:'', keywords:[], hidden:false,
+          audio:null, dur:0, phase:'work', presence: pick(PRESENCE), note:'', start:Date.now()};
+}
+
+VIEWS.exercitatio = (m, force=false) => {
+  if(!S.images.length){
+    m.innerHTML=`<div class="empty"><p>Nullae adhuc imagines.</p><p><button class="btn primary" id="goimg">Adde imagines</button></p></div>`;
+    $('#goimg').onclick=()=>go('imagines'); return;
+  }
+  const card = pickNext(skipped, lastImageId, force);
+  if(!card){
+    const {later, fresh} = queueInfo(skipped);
+    const next = later[0];
+    m.innerHTML=`<div class="empty">
+      <p style="font-size:1.2rem">Nihil nunc debetur.</p>
+      ${next?`<p>Proxima carta debetur : ${esc(fmtDate(next.due))}.</p>`:''}
+      ${fresh.length?`<p class="small">${fresh.length} chartae novae exspectant (limes diurnus : ${S.settings.newPerDay}).</p>`:''}
+      <p class="actions" style="justify-content:center">
+        ${(next||fresh.length)?`<button class="btn" id="force">Nihilominus perge</button>`:''}
+        <button class="btn ghost" id="gostud">Ad studium</button></p></div>`;
+    $('#force') && ($('#force').onclick=()=>{ skipped.clear(); const mm=$('#main'); mm.innerHTML=''; VIEWS.exercitatio(mm,true); });
+    $('#gostud').onclick=()=>go('studium');
+    return;
+  }
+  P = buildPractice(card);
+  renderPractice(m);
+};
+
+function renderPractice(m){
+  const img=imgById(P.card.imageId);
+  const {due, fresh} = queueInfo(skipped);
+  m.innerHTML=`<section class="stage">
+    ${P.partner ? pairHTML(img, P.partner) : figureHTML(img)}
+    <div class="work">
+      ${headerHTML(P.card.level, P.palier)}
+      ${constraintHTML(P.card.level, P.tour, P.variant)}
+      <div id="pwork"></div>
+      <div id="pactions"></div>
+      <p class="muted small" style="margin-top:1.6rem">${P.card.isNew?'Charta nova':'Repetitio'} · debitae ${due.length}, novae hodie ${Math.min(newLeftToday(), fresh.length)}</p>
+    </div></section>`;
+  renderPWork();
+}
+
+function renderPWork(){
+  const w=$('#pwork'), act=$('#pactions'); if(!w) return;
+  if(P.phase==='rate') return renderRate();
+  const p=P.palier; let h='';
+  if(p==='a'){
+    h=`<textarea id="ptext" class="lat" lang="la" rows="10" spellcheck="false" placeholder="Scribe hic…">${esc(P.text)}</textarea>${macronBar('ptext')}`;
+  } else if(p==='b'){
+    h=`<div class="source lat" lang="la">${textHTML(P.src)}</div>${posture()}<div id="prec"></div>`;
+  } else if(p==='c'){
+    h = P.hidden
+      ? `<div class="source masked">Textus celatus.</div>${posture()}<div id="prec"></div>`
+      : `<div class="source lat" lang="la">${textHTML(P.src)}</div><div class="actions"><button class="btn" id="phide">Conde textum</button></div>`;
+  } else if(p==='d'){
+    if(!P.hidden){
+      h=`<div class="source lat" lang="la">${textHTML(P.src)}</div>
+        <div class="lab">Elige tria verba (${P.keywords.length}/3)</div>
+        <div class="chips">${wordsOf(P.src).map(wd=>`<button class="chip" data-w="${esc(wd)}" aria-pressed="${P.keywords.includes(wd)}">${esc(wd)}</button>`).join('')}
+        ${P.keywords.filter(k=>!wordsOf(P.src).includes(k)).map(wd=>`<button class="chip" data-w="${esc(wd)}" aria-pressed="true">${esc(wd)}</button>`).join('')}</div>
+        <div class="row"><input type="text" id="pkwadd" lang="la" placeholder="aliud verbum…"><button class="btn ghost" id="pkwbtn">Adde</button></div>
+        <div class="actions"><button class="btn" id="phide" ${P.keywords.length===3?'':'disabled'}>Conde textum</button></div>`;
+    } else {
+      h=`<div class="keywords-big lat" lang="la">${P.keywords.map(k=>`<span>${esc(k)}</span>`).join('')}</div>${posture()}<div id="prec"></div>`;
+    }
+  } else if(p==='e'){
+    h=`<div class="row small"><label style="flex-direction:row;align-items:center;gap:.4rem"><input type="checkbox" id="ptimeron"> <span style="font-variant:normal;font-size:.95rem;color:var(--ink)">Horologium</span></label>
+       <input type="number" id="ptimer" min="10" step="10" value="${S.settings.timerSec}"> <span class="muted">secundae</span></div>
+       ${posture()}<div id="prec"></div>`;
+  }
+  w.innerHTML=h;
+  act.innerHTML=`<div class="actions"><button class="btn ghost" id="pskip" title="Passer cette carte">Omitte</button><span class="spacer"></span><button class="btn primary" id="pdone">Absolvi</button></div>`;
+
+  const ta=$('#ptext'); if(ta){ ta.addEventListener('input',()=>{ P.text=ta.value; updateDone(); }); ta.focus(); }
+  const hide=$('#phide'); if(hide) hide.onclick=()=>{ P.hidden=true; renderPWork(); };
+  $$('.chip[data-w]', w).forEach(c=>c.onclick=()=>{
+    const wd=c.dataset.w; const i=P.keywords.indexOf(wd);
+    if(i>=0) P.keywords.splice(i,1); else if(P.keywords.length<3) P.keywords.push(wd);
+    renderPWork();
+  });
+  const kwb=$('#pkwbtn'); if(kwb){ const add=()=>{ const v=$('#pkwadd').value.trim(); if(v && P.keywords.length<3 && !P.keywords.includes(v)){ P.keywords.push(v); renderPWork(); } }; kwb.onclick=add; $('#pkwadd').onkeydown=e=>{ if(e.key==='Enter') add(); }; }
+  const tm=$('#ptimer'); if(tm) tm.onchange=()=>{ const v=Math.max(10, +tm.value||90); S.settings.timerSec=v; saveSettings(); };
+  if($('#prec')) new Recorder($('#prec'), {
+    getTimer: () => ($('#ptimeron') && $('#ptimeron').checked) ? Math.max(10, +$('#ptimer').value||90) : 0,
+    onChange: (blob,dur)=>{ P.audio=blob; P.dur=dur; updateDone(); }
+  });
+  $('#pskip').onclick=()=>{ stopAllRecorders(); skipped.add(P.card.id); lastImageId=P.card.imageId; go('exercitatio'); };
+  $('#pdone').onclick=()=>{ stopAllRecorders(); P.phase='rate'; renderPWork(); };
+  updateDone();
+}
+function updateDone(){
+  const b=$('#pdone'); if(!b) return;
+  b.disabled = P.palier==='a' ? !P.text.trim() : !P.audio;
+}
+function renderRate(){
+  const w=$('#pwork'), act=$('#pactions');
+  const shown = P.palier==='a' ? P.text : ('bcd'.includes(P.palier) ? P.src : '');
+  w.innerHTML = `
+    ${shown?`<details ${P.palier==='a'?'open':''}><summary class="lab">Textus</summary><div class="source lat" lang="la">${textHTML(shown)}</div></details>`:''}
+    ${P.keywords.length?`<p class="lab">Verba clavia : <span class="lat" style="font-variant:normal;color:var(--ink)">${P.keywords.map(esc).join(' · ')}</span></p>`:''}
+    ${P.audio?`<div class="rec"><audio controls src="${URL.createObjectURL(P.audio)}"></audio></div>`:''}
+    <h3>${biO(P.presence)}</h3>
+    <textarea id="pnote" rows="3" placeholder="Nota libera…">${esc(P.note)}</textarea>`;
+  $('#pnote').addEventListener('input', e=>P.note=e.target.value);
+  act.innerHTML = `<div class="rating">${RATINGS.map(x=>`<button class="btn ${x.r===3?'primary':''}" data-r="${x.r}" title="${esc(x.fr)}"><span>${x.la}</span><span class="iv">${ivLabel(P.card,x.r)}</span></button>`).join('')}</div>`;
+  $$('[data-r]', act).forEach(b=>b.onclick=()=>rate(+b.dataset.r));
+}
+async function rate(r){
+  $$('#pactions button').forEach(b=>b.disabled=true);
+  const wasNew = !!P.card.isNew;
+  const card = schedule(P.card, r); delete card.isNew;
+  if(P.palier==='a'){ card.lastText=P.text; card.lastTournure=P.tour?P.tour.id:null; card.lastVariant=P.variant||null; card.textDate=Date.now(); card.partnerId=P.partner?P.partner.id:null; }
+  let audioId=null;
+  if(P.audio){ audioId=uid(); await DB.put('audio',{id:audioId, blob:P.audio, mime:P.audio.type, imageId:card.imageId}); }
+  const sess = { id:uid(), date:Date.now(), mode:'exercitatio', imageId:card.imageId, partnerId:P.partner?P.partner.id:null, level:card.level, palier:P.palier,
+    tournure:P.tour?P.tour.id:null, variant:P.variant||null,
+    text: P.palier==='a' ? P.text : ('bcd'.includes(P.palier)?P.src:''), textRole: P.palier==='a'?'scriptum':'fons',
+    keywords:P.keywords.slice(), audioId, durationMs:P.dur||0, rating:r, presenceQ:P.presence, note:P.note.trim() };
+  S.cards.set(card.id, card); await DB.put('cards', card);
+  S.sessions.push(sess); await DB.put('sessions', sess);
+  if(wasNew){ const nt=S.settings.newToday; if(nt.date!==todayStr()){ nt.date=todayStr(); nt.count=0; } nt.count++; await saveSettings(); }
+  lastImageId=card.imageId; skipped.delete(card.id);
+  go('exercitatio');
+}
+
+/* =====================================================================
+   VUE : STUDIUM (mode apprentissage)
+   ===================================================================== */
+const St = { imageId:null, level:1, palier:'a', tourId:'', variant:null, text:'', kw:['','',''], hidden:false, audio:null, dur:0, register:null };
+
+function latestTextFor(imageId, level){
+  const c=S.cards.get(`${imageId}|${level}`); if(c && c.lastText) return c.lastText;
+  const s=S.sessions.filter(x=>x.imageId===imageId && x.level===level && x.text && x.textRole==='scriptum').sort((a,b)=>b.date-a.date)[0];
+  return s ? s.text : '';
+}
+
+VIEWS.studium = m => {
+  if(!S.images.length){ m.innerHTML=`<div class="empty"><p>Nullae adhuc imagines.</p><p><button class="btn primary" id="goimg">Adde imagines</button></p></div>`; $('#goimg').onclick=()=>go('imagines'); return; }
+  if(!St.imageId || !imgById(St.imageId)) St.imageId=S.images[0].id;
+  if(!St.register) St.register=S.settings.register;
+  if(St.tourId===null || (St.tourId && !TOUR[St.tourId].levels.includes(St.level))) St.tourId='';
+  if(!levelUsable(LEVELS[St.level-1])) St.level=1;
+  const img=imgById(St.imageId), L=LEVELS[St.level-1];
+  if(L.pair && (!St.partnerId || St.partnerId===St.imageId || !imgById(St.partnerId))) St.partnerId=(drawPartner(St.imageId)||{}).id||null;
+  const partner = L.pair ? imgById(St.partnerId) : null;
+  const tours=TOURNURES.filter(t=>t.levels.includes(St.level));
+  const tour=St.tourId?TOUR[St.tourId]:null;
+  const past=S.sessions.filter(s=>s.imageId===St.imageId && s.text && s.textRole==='scriptum').sort((a,b)=>b.date-a.date);
+  const p=St.palier;
+  m.innerHTML=`
+  <div class="panel row">
+    <label><span>Imago</span><select id="simg">${imagesOrdered().map(i=>`<option value="${i.id}" ${i.id===St.imageId?'selected':''}>${esc(imgOptLabel(i))}</option>`).join('')}</select></label>
+    <label><span>Gradus</span><select id="slvl">${LEVELS.map(l=>`<option value="${l.n}" ${l.n===St.level?'selected':''} ${levelUsable(l)?'':'disabled'}>${ROMAN[l.n]}. ${l.la}${levelUsable(l)?'':' (duae imagines requiruntur)'}</option>`).join('')}</select></label>
+    ${L.pair?`<label><span>Imago altera</span><select id="spart">${imagesOrdered().filter(i=>i.id!==St.imageId).map(i=>`<option value="${i.id}" ${i.id===St.partnerId?'selected':''}>${esc(imgOptLabel(i))}</option>`).join('')}</select></label>`:''}
+    <label><span>Gradus internus</span><select id="spal">${PALIER_KEYS.map(k=>`<option value="${k}" ${k===p?'selected':''}>${k}. ${PALIERS[k].la}</option>`).join('')}</select></label>
+    <label><span>Forma necessaria</span><select id="stour"><option value="">— nulla —</option>${tours.map(t=>`<option value="${t.id}" ${t.id===St.tourId?'selected':''}>${esc(t.la)}</option>`).join('')}</select></label>
+    <button class="btn ghost" id="sdraw" title="Tirer au sort tournure et variante">Sorte</button>
+    <label><span>Latinitas</span><select id="sreg">${Object.entries(REGISTERS).map(([k,v])=>`<option value="${k}" ${k===St.register?'selected':''}>${v.la}</option>`).join('')}</select></label>
+  </div>
+  <section class="stage">
+    ${partner ? pairHTML(img, partner) : figureHTML(img)}
+    <div class="work">
+      ${headerHTML(St.level, p)}
+      ${constraintHTML(St.level, tour, St.variant)}
+      ${vocabPanelHTML(img, partner)}
+      <div class="row" style="margin-top:1rem; justify-content:space-between">
+        <span class="lab">${p==='e'?'Transcriptio (si vis)':'Textus'}</span>
+        <span class="row">
+          ${past.length?`<select id="spast" class="small"><option value="">Textus prior…</option>${past.map(s=>`<option value="${s.id}">${esc(fmtDay(s.date))} · ${ROMAN[s.level]} · ${esc(s.text.slice(0,30))}…</option>`).join('')}</select>`:''}
+          <button class="btn ghost" id="smask">${St.hidden?'Ostende textum':'Conde textum'}</button>
+        </span>
+      </div>
+      <div id="stextwrap" class="${St.hidden?'hidden':''}">
+        <textarea id="stext" class="lat" lang="la" rows="9" spellcheck="false" placeholder="Scribe hic…">${esc(St.text)}</textarea>${macronBar('stext')}
+      </div>
+      <div class="source masked ${St.hidden?'':'hidden'}">Textus celatus.</div>
+      ${p==='d'?`<div class="lab" style="margin-top:.8rem">Verba clavia</div><div class="row">${St.kw.map((k,i)=>`<input type="text" class="skw" data-i="${i}" lang="la" value="${esc(k)}" style="width:9rem">`).join('')}</div>
+        ${St.hidden && St.kw.some(k=>k.trim())?`<div class="keywords-big lat">${St.kw.filter(k=>k.trim()).map(k=>`<span>${esc(k)}</span>`).join('')}</div>`:''}`:''}
+      ${p==='e'?`<div class="row small" style="margin-top:.8rem"><label style="flex-direction:row;align-items:center;gap:.4rem"><input type="checkbox" id="stimeron"> <span style="font-variant:normal;font-size:.95rem;color:var(--ink)">Horologium</span></label><input type="number" id="stimer" min="10" step="10" value="${S.settings.timerSec}"> <span class="muted">secundae</span></div>`:''}
+      ${p!=='a'?`<div id="srec"></div>`:''}
+      <div class="actions">
+        <button class="btn" id="sprompt" title="Copier dans le presse-papiers un prompt de correction">Para petitionem correctionis</button>
+        <span class="spacer"></span>
+        <button class="btn primary" id="ssave" title="Enregistrer dans l'historique">Serva in historiam</button>
+      </div>
+      <p class="muted small">In studio nulla repetitio constituitur ; omnia in historia servantur.</p>
+    </div>
+  </section>`;
+
+  const rerender = () => { stopAllRecorders(); St.audio=null; go('studium'); };
+  $('#simg').onchange=e=>{ St.imageId=e.target.value; St.text=''; St.hidden=false; rerender(); };
+  $('#slvl').onchange=e=>{ St.level=+e.target.value; St.tourId=''; St.variant=drawVariant(St.level); rerender(); };
+  $('#spal').onchange=e=>{ St.palier=e.target.value; if('bcd'.includes(St.palier) && !St.text.trim()) St.text=latestTextFor(St.imageId, St.level); St.hidden=false; rerender(); };
+  $('#stour').onchange=e=>{ St.tourId=e.target.value; rerender(); };
+  $('#sdraw').onclick=()=>{ const t=drawTournure(St.level, St.tourId); St.tourId=t?t.id:''; St.variant=drawVariant(St.level); rerender(); };
+  $('#sreg').onchange=e=>{ St.register=e.target.value; S.settings.register=St.register; saveSettings(); };
+  $('#spart') && ($('#spart').onchange=e=>{ St.partnerId=e.target.value; rerender(); });
+  bindVocabPanel(m, img, partner);
+  $('#stext').addEventListener('input', e=>{ St.text=e.target.value; });
+  $('#smask').onclick=()=>{ St.hidden=!St.hidden; $('#stextwrap').classList.toggle('hidden',St.hidden); $('.work .source.masked').classList.toggle('hidden',!St.hidden); $('#smask').textContent=St.hidden?'Ostende textum':'Conde textum';
+    if(p==='d'){ stopAllRecorders(); St.audio=null; go('studium'); } };
+  $('#spast') && ($('#spast').onchange=e=>{ const s=S.sessions.find(x=>x.id===e.target.value); if(s){ St.text=s.text; $('#stext').value=s.text; } });
+  $$('.skw').forEach(inp=>inp.addEventListener('input',()=>{ St.kw[+inp.dataset.i]=inp.value; }));
+  if($('#srec')) new Recorder($('#srec'), {
+    getTimer: () => ($('#stimeron') && $('#stimeron').checked) ? Math.max(10, +$('#stimer').value||90) : 0,
+    onChange: (b,d)=>{ St.audio=b; St.dur=d; }
+  });
+  $('#sprompt').onclick=()=>copyPrompt();
+  $('#ssave').onclick=async()=>{
+    if(!St.text.trim() && !St.audio){ toast('Nihil servandum.'); return; }
+    let audioId=null;
+    if(St.audio){ audioId=uid(); await DB.put('audio',{id:audioId, blob:St.audio, mime:St.audio.type, imageId:St.imageId}); }
+    const sess={ id:uid(), date:Date.now(), mode:'studium', imageId:St.imageId, partnerId:partner?partner.id:null, level:St.level, palier:St.palier,
+      tournure:St.tourId||null, variant:St.variant||null, text:St.text, textRole: St.palier==='a'||St.palier==='e' ? 'scriptum' : 'fons',
+      keywords:St.kw.filter(k=>k.trim()), audioId, durationMs:St.dur||0, register:St.register, rating:null, note:'' };
+    S.sessions.push(sess); await DB.put('sessions', sess);
+    toast('Servatum in historia.'); rerender();
+  };
+};
+
+/* =====================================================================
+   BANQUE DE VOCABULAIRE (par image)
+   ===================================================================== */
+const VCAT = {nomen:'Nomen', verbum:'Verbum', adi:'Adiectivum', adv:'Adverbium', loc:'Locutio', alia:'Alia'};
+const vcatSelect = (id, sel='nomen', withAll=false) => `<select id="${id}">${withAll?'<option value="">omnia genera</option>':''}${Object.entries(VCAT).map(([k,v])=>`<option value="${k}" ${k===sel?'selected':''}>${v}</option>`).join('')}</select>`;
+const headword = la => la.split(/[,(;]/)[0].trim();
+async function addWord(img, la, fr, cat){
+  la=la.trim(); fr=fr.trim(); if(!la) return false;
+  img.words = img.words || [];
+  if(img.words.some(w=>w.la.toLowerCase()===la.toLowerCase())){ toast('Iam adest.'); return false; }
+  img.words.push({id:uid(), la, fr, cat, added:Date.now()}); await DB.put('images', img); return true;
+}
+async function delWord(img, wid){ img.words=(img.words||[]).filter(w=>w.id!==wid); await DB.put('images', img); }
+function vrowsHTML(img, mark){
+  const ws=(img.words||[]).slice().sort((a,b)=>a.la.localeCompare(b.la,'la'));
+  return ws.map(w=>`<div class="vrow"><button type="button" class="vins lat" lang="la" data-ins="${esc(headword(w.la))}" title="Insérer dans le texte">${esc(w.la)}</button>
+    <span class="vfr">${esc(w.fr)}</span>${mark?`<span class="badge">${mark}</span>`:''}<span class="muted small">${VCAT[w.cat]||''}</span>
+    <button type="button" class="vdel" data-img="${img.id}" data-vdel="${w.id}" title="Supprimer">×</button></div>`).join('');
+}
+function vocabPanelHTML(img, partner){
+  const n=(img.words||[]).length + (partner?(partner.words||[]).length:0);
+  return `<details class="vocab" open><summary class="lab">Vocabularium (${n})</summary>
+    <div class="vlist">${vrowsHTML(img, partner?'A':'')}${partner?vrowsHTML(partner,'B'):''}${n?'':'<p class="muted small">Nondum vocabula.</p>'}</div>
+    <div class="row vadd">
+      <input type="text" id="vla" class="lat" lang="la" placeholder="vocabulum (e.g. domus, -ūs f.)" style="flex:2;min-width:11rem">
+      <input type="text" id="vfr" placeholder="sens" style="flex:1;min-width:7rem">
+      ${vcatSelect('vcat')}
+      ${partner?`<select id="vto"><option value="A">ad A</option><option value="B">ad B</option></select>`:''}
+      <button type="button" class="btn" id="vadd">Adde</button>
+    </div>${macronBar('vla')}
+    <details ${img.vocab?'open':''} style="margin-top:.4rem"><summary class="small muted">Notae liberae</summary>
+      <textarea id="svocab" class="lat" lang="la" rows="3" placeholder="locutiones, observationes…">${esc(img.vocab||'')}</textarea></details>
+  </details>`;
+}
+function bindVocabPanel(root, img, partner){
+  const refresh = () => { stopAllRecorders(); St.audio=null; go('studium'); };
+  const add = async () => {
+    const target = ($('#vto') && $('#vto').value==='B') ? partner : img;
+    if(await addWord(target, $('#vla').value, $('#vfr').value, $('#vcat').value)) refresh();
+  };
+  $('#vadd', root).onclick=add;
+  [$('#vla',root), $('#vfr',root)].forEach(i=>i.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); add(); } }));
+  $$('[data-vdel]', root).forEach(b=>b.onclick=async()=>{ await delWord(imgById(b.dataset.img), b.dataset.vdel); refresh(); });
+  $$('[data-ins]', root).forEach(b=>b.onclick=()=>{
+    const ta=$('#stext'); if(!ta || $('#stextwrap').classList.contains('hidden')) return;
+    const s=ta.selectionStart ?? ta.value.length, e=ta.selectionEnd ?? s;
+    const before=ta.value.slice(0,s); const pad=(before && !/\s$/.test(before))?' ':'';
+    ta.setRangeText(pad+b.dataset.ins, s, e, 'end'); ta.focus(); ta.dispatchEvent(new Event('input',{bubbles:true}));
+  });
+  let vt; $('#svocab', root).addEventListener('input', e=>{ img.vocab=e.target.value; clearTimeout(vt); vt=setTimeout(()=>DB.put('images', img), 500); });
+}
+
+/* Vue globale : VOCABULA */
+const V = { q:'', cat:'', imageId:'' };
+VIEWS.vocabula = m => {
+  const all=[]; S.images.forEach(i=>(i.words||[]).forEach(w=>all.push({w,i})));
+  const norm = s => s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+  const q=norm(V.q);
+  const rows=all.filter(({w,i})=>(!V.cat||w.cat===V.cat) && (!V.imageId||i.id===V.imageId) && (!q || norm(w.la).includes(q) || norm(w.fr||'').includes(q)))
+    .sort((a,b)=>norm(a.w.la).localeCompare(norm(b.w.la)));
+  m.innerHTML=`<h2>Vocabula <span class="muted small">(${all.length})</span></h2>
+  <div class="panel row">
+    <input type="search" id="vq" placeholder="Quaere (latine vel gallice)…" value="${esc(V.q)}" style="flex:1;min-width:12rem">
+    ${vcatSelect('vfcat', V.cat, true)}
+    <select id="vfimg"><option value="">omnes imagines</option>${S.images.map(i=>`<option value="${i.id}" ${i.id===V.imageId?'selected':''}>${esc((i.title||'').slice(0,50))}</option>`).join('')}</select>
+  </div>
+  ${S.images.length?`<div class="panel"><div class="row vadd">
+    <input type="text" id="gla" class="lat" lang="la" placeholder="vocabulum" style="flex:2;min-width:11rem">
+    <input type="text" id="gfr" placeholder="sens" style="flex:1;min-width:7rem">
+    ${vcatSelect('gcat')}
+    <select id="gimg">${S.images.map(i=>`<option value="${i.id}" ${i.id===V.imageId?'selected':''}>${esc((i.title||'').slice(0,40))}</option>`).join('')}</select>
+    <button class="btn" id="gadd">Adde</button></div>${macronBar('gla')}</div>`:''}
+  <table class="cards vtable"><tr><th>Latine</th><th>Sensus</th><th>Genus</th><th>Imago</th><th></th></tr>
+  ${rows.map(({w,i})=>`<tr><td class="lat" lang="la">${esc(w.la)}</td><td>${esc(w.fr)}</td><td class="muted">${VCAT[w.cat]||''}</td>
+    <td><button class="linkish" data-goimg="${i.id}">${esc((i.title||'').slice(0,40))}</button></td>
+    <td><button class="vdel" data-img="${i.id}" data-vdel="${w.id}" title="Supprimer">×</button></td></tr>`).join('')}
+  </table>${rows.length?'':'<p class="muted">Nihil.</p>'}`;
+  const q_=$('#vq'); q_.oninput=()=>{ V.q=q_.value; const pos=q_.selectionStart; go('vocabula'); const n=$('#vq'); n.focus(); n.setSelectionRange(pos,pos); };
+  $('#vfcat').onchange=e=>{ V.cat=e.target.value; go('vocabula'); };
+  $('#vfimg').onchange=e=>{ V.imageId=e.target.value; go('vocabula'); };
+  const gadd=async()=>{ if(await addWord(imgById($('#gimg').value), $('#gla').value, $('#gfr').value, $('#gcat').value)){ go('vocabula'); $('#gla').focus(); } };
+  $('#gadd') && ($('#gadd').onclick=gadd);
+  [$('#gla'),$('#gfr')].forEach(i=>i && i.addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); gadd(); } }));
+  $$('[data-vdel]').forEach(b=>b.onclick=async()=>{ await delWord(imgById(b.dataset.img), b.dataset.vdel); go('vocabula'); });
+  $$('[data-goimg]').forEach(b=>b.onclick=()=>{ St.imageId=b.dataset.goimg; St.text=''; go('studium'); });
+};
+
+function buildPrompt(){
+  const img=imgById(St.imageId), L=LEVELS[St.level-1], Pa=PALIERS[St.palier], tour=St.tourId?TOUR[St.tourId]:null, reg=REGISTERS[St.register];
+  const macrons=/[āēīōūȳĀĒĪŌŪȲ]/.test(St.text);
+  return `Tu es un professeur de latin et de rhétorique antique. Corrige le texte latin ci-dessous, écrit dans le cadre d'un exercice de progymnasmata.
+
+Registre visé : ${reg.fr}.
+Exercice : niveau ${St.level} – ${L.la} (${L.fr}).
+Consigne : ${L.cons.fr}
+Palier : ${St.palier} – ${Pa.fr}${St.palier!=='a'?' (texte préparé pour être dit à l’oral)':''}.
+${tour?`Tournure obligatoire : ${tour.la} (${tour.fr}).\n`:''}${St.variant?`${L.variantLabel?L.variantLabel.fr:'Variante'} : ${St.variant.fr}\n`:''}${St.palier==='d'&&St.kw.some(k=>k.trim())?`Mots-clés choisis : ${St.kw.filter(k=>k.trim()).join(', ')}\n`:''}${(()=>{ const pa=L.pair?imgById(St.partnerId):null; const d=i=>{ const r=i.parentId?imgById(i.parentId):null; return `« ${i.title||'sans titre'} »${i.source?` (${i.source})`:''}${r?` — détail recadré de « ${r.title||'sans titre'} »${(i.notes||[]).some(a=>a.t==='text')?`, annoté : ${i.notes.filter(a=>a.t==='text').map(a=>a.txt).join(' / ')}`:''}`:''}`; }; return pa ? `Images comparées : A = ${d(img)} ; B = ${d(pa)}.` : `Image décrite : ${d(img)}.`; })()}
+
+Texte :
+"""
+${St.text.trim()}
+"""
+
+Merci de :
+1. relever les fautes (morphologie, syntaxe, lexique, ordre des mots), avec une explication brève pour chacune ;
+2. dire si la consigne${tour?' et la tournure obligatoire':''} sont respectées ;
+3. proposer une version corrigée qui reste au plus près de mes choix ;
+4. suggérer deux ou trois tournures plus idiomatiques pour ce registre${St.level>=4?', et une remarque sur l’efficacité rhétorique':''}.
+${macrons?'J’ai noté les quantités : signale aussi les macrons fautifs.':'Je n’ai pas noté les quantités : n’en tiens pas compte.'}
+Ne réécris pas tout : je veux comprendre mes erreurs.`;
+}
+async function copyPrompt(){
+  if(!St.text.trim()){ toast('Textus deest.'); return; }
+  const txt=buildPrompt();
+  try{ await navigator.clipboard.writeText(txt); toast('Petitio exscripta est.'); return; }catch(e){}
+  try{ const ta=document.createElement('textarea'); ta.value=txt; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); const ok=document.execCommand('copy'); ta.remove(); if(ok){ toast('Petitio exscripta est.'); return; } }catch(e){}
+  // dernier recours : afficher le texte
+  const m=$('#main'); const d=document.createElement('div'); d.className='panel'; d.innerHTML=`<p class="lab">Exscribe manu :</p><textarea rows="14" readonly>${esc(txt)}</textarea>`; m.prepend(d); $('textarea',d).select();
+}
+
+/* =====================================================================
+   VUE : IMAGINES
+   ===================================================================== */
+const AIC = 'https://api.artic.edu/api/v1/artworks/search';
+const iiif = (imageId, w) => `https://www.artic.edu/iiif/2/${imageId}/full/${w},/0/default.jpg`;
+
+let IMGSRC='commons';
+async function fetchJSON(url, ms=12000){
+  const ctrl=new AbortController(); const to=setTimeout(()=>ctrl.abort(), ms);
+  try{ const r=await fetch(url,{signal:ctrl.signal}); if(!r.ok) throw new Error('HTTP '+r.status); return await r.json(); }
+  finally{ clearTimeout(to); }
+}
+async function searchAIC(q){
+  const j=await fetchJSON(`${AIC}?q=${encodeURIComponent(q||'landscape')}&query[term][is_public_domain]=true&limit=24&fields=id,title,artist_display,date_display,image_id`);
+  return (j.data||[]).filter(x=>x.image_id).map(x=>({
+    title:x.title, thumb:iiif(x.image_id,400), full:iiif(x.image_id,843), aicId:x.id,
+    credit:`${(x.artist_display||'').split('\n')[0]}${x.date_display?', '+x.date_display:''} — Art Institute of Chicago` }));
+}
+const stripTags = s => {
+  const d=new DOMParser().parseFromString(`<div>${s||''}</div>`,'text/html').body;
+  d.querySelectorAll('[style*="display:none"],[style*="display: none"]').forEach(n=>n.remove());
+  return (d.textContent||'').replace(/\s+/g,' ').replace(/\s*(title|label) QS:.*$/,'').trim();
+};
+async function searchCommons(q){
+  const url='https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrnamespace=6&gsrlimit=40'
+    +'&gsrsearch='+encodeURIComponent((q||'painting landscape')+' filetype:bitmap')
+    +'&prop=imageinfo&iiprop=url|extmetadata&iiurlwidth=400&iiextmetadatafilter=LicenseShortName|Artist|DateTimeOriginal|ObjectName';
+  const j=await fetchJSON(url);
+  const pages=Object.values((j.query&&j.query.pages)||{}).sort((a,b)=>(a.index||0)-(b.index||0));
+  return pages.map(p=>{
+    const ii=(p.imageinfo||[])[0]; if(!ii || !ii.thumburl) return null;
+    const md=ii.extmetadata||{}; const lic=(md.LicenseShortName&&md.LicenseShortName.value)||'';
+    if(!/public domain|^pd|cc0/i.test(lic)) return null;
+    const title=stripTags(md.ObjectName&&md.ObjectName.value) || p.title.replace(/^File:/,'').replace(/\.[a-z]+$/i,'');
+    const artist=stripTags(md.Artist&&md.Artist.value).slice(0,80); const date=stripTags(md.DateTimeOriginal&&md.DateTimeOriginal.value).slice(0,30);
+    return { title, thumb:ii.thumburl, full:ii.thumburl.replace(/\/\d+px-/, '/1280px-'),
+      credit:`${artist?artist+', ':''}${date?date+', ':''}${lic} — Wikimedia Commons` };
+  }).filter(Boolean).slice(0,24);
+}
+async function addImage(rec){
+  const img = { id:uid(), title:rec.title||'Sine titulo', source:rec.source||'', url:rec.url||'', blob:rec.blob||null, vocab:'', addedAt:Date.now(), aicId:rec.aicId||null };
+  S.images.push(img); await DB.put('images', img); return img;
+}
+async function tryFetchBlob(url){
+  try{ const r=await fetch(url,{mode:'cors'}); if(!r.ok) return null; const b=await r.blob(); return b.type.startsWith('image/')?b:null; }catch(e){ return null; }
+}
+
+VIEWS.imagines = m => {
+  m.innerHTML=`
+  <h2>Imagines</h2>
+  <div class="panel">
+    <h3 style="margin-top:0">Adde imaginem tuam</h3>
+    <div class="row">
+      <label class="btn">Ex disco… <input type="file" id="ifile" accept="image/*" multiple hidden></label>
+      <span class="muted">vel</span>
+      <input type="url" id="iurl" placeholder="https://…" style="flex:1;min-width:14rem">
+    </div>
+    <div class="row" style="margin-top:.6rem">
+      <input type="text" id="ititle" placeholder="Titulus" style="flex:1;min-width:12rem">
+      <input type="text" id="isource" placeholder="Fons (auctor, museum…)" style="flex:1;min-width:12rem">
+      <button class="btn primary" id="iaddurl">Adde ex URL</button>
+    </div>
+  </div>
+  <div class="panel">
+    <h3 style="margin-top:0">Quaere imagines <span class="muted small">(dominium publicum)</span></h3>
+    <div class="row"><input type="search" id="aq" placeholder="e.g. harbor painting, market, saint, landscape…" style="flex:1;min-width:14rem">
+      <select id="asrc" title="Source"><option value="commons" ${IMGSRC==='commons'?'selected':''}>Wikimedia Commons</option><option value="aic" ${IMGSRC==='aic'?'selected':''}>Art Institute of Chicago</option></select>
+      <button class="btn" id="ago">Quaere</button></div>
+    <p class="muted small" id="amsg"></p>
+    <div class="grid" id="ares"></div>
+  </div>
+  <h3>Imagines tuae <span class="muted small">(${S.images.length})</span></h3>
+  <div class="grid" id="ilist"></div>`;
+
+  renderImgList();
+  $('#ifile').onchange = async e => {
+    const files=[...e.target.files]; for(const f of files){ await addImage({title:f.name.replace(/\.[^.]+$/,''), source:'', blob:f}); }
+    toast(`${files.length} addita.`); go('imagines');
+  };
+  $('#iaddurl').onclick = async () => {
+    const url=$('#iurl').value.trim(); if(!url){ toast('URL deest.'); return; }
+    const blob=await tryFetchBlob(url);
+    await addImage({title:$('#ititle').value.trim()||url.split('/').pop(), source:$('#isource').value.trim()||url, url, blob});
+    toast(blob?'Addita (et localiter servata).':'Addita (tantum per URL).'); go('imagines');
+  };
+  const search = async () => {
+    const q=$('#aq').value.trim(); const msg=$('#amsg'), res=$('#ares');
+    IMGSRC=$('#asrc').value;
+    msg.textContent='Quaeritur…'; res.innerHTML='';
+    let items;
+    try{
+      items = IMGSRC==='aic' ? await searchAIC(q) : await searchCommons(q);
+    }catch(e){
+      console.warn(e);
+      msg.textContent = IMGSRC==='aic'
+        ? 'Art Institute of Chicago non respondet : eius murus (Cloudflare) petitiones ex pagina vetat. Wikimedia Commons tenta.'
+        : 'Rete non respondet. Imagines tuae tamen adsunt.';
+      return;
+    }
+    msg.textContent = items.length ? `${items.length} inventa.` : 'Nihil inventum (dominii publici).';
+    res.innerHTML = items.map((x,k)=>`<div class="tile"><img loading="lazy" src="${esc(x.thumb)}" alt="">
+      <div class="body"><div class="t">${esc(x.title)}</div><div class="s">${esc(x.credit)}</div>
+      <div class="row"><button class="btn" data-k="${k}">Adde</button></div></div></div>`).join('');
+    $$('[data-k]', res).forEach(b=>b.onclick=async()=>{
+      b.disabled=true; b.textContent='…';
+      const x=items[+b.dataset.k];
+      let url=x.full, blob=await tryFetchBlob(x.full);
+      if(!blob && x.thumb!==x.full){ blob=await tryFetchBlob(x.thumb); if(blob) url=x.thumb; }
+      await addImage({title:x.title, source:x.credit, url, blob, aicId:x.aicId||null});
+      b.textContent=blob?'Addita':'Addita (URL)'; renderImgList();
+    });
+  };
+  $('#ago').onclick=search; $('#aq').onkeydown=e=>{ if(e.key==='Enter') search(); };
+};
+
+function renderImgList(){
+  const el=$('#ilist'); if(!el) return;
+  if(!S.images.length){ el.innerHTML='<p class="muted">Nullae adhuc.</p>'; return; }
+  el.innerHTML = imagesOrdered(true).map(i=>{
+    const n=S.sessions.filter(s=>s.imageId===i.id || s.partnerId===i.id).length;
+    const root=i.parentId?imgById(i.parentId):null, parts=i.parentId?0:childrenOf(i.id).length;
+    return `<div class="tile${i.parentId?' part':''}" data-id="${i.id}">${thumbHTML(i,'thumb')}
+    <div class="body">
+      ${root?`<div class="s">Pars ex « ${esc(root.title)} »</div>`:''}
+      <input type="text" class="et" value="${esc(i.title)}" title="Titulus">
+      <input type="text" class="es" value="${esc(i.source)}" placeholder="Fons" title="Fons">
+      <textarea class="ev lat" rows="2" placeholder="Notae vocabulorum" lang="la">${esc(i.vocab||'')}</textarea>
+      <div class="s">${n} exercitationes · ${(i.words||[]).length} vocabula${parts?` · ${parts} ${parts>1?'partes':'pars'}`:''}${i.blob||i.parentId?'':' · tantum URL'}</div>
+      <div class="row"><button class="btn ghost" data-ed="${i.id}" title="Recadrer sur un détail, ajouter flèches, texte, émoticônes">Recide · nota</button><button class="btn ghost" data-act="hist">Historia</button><button class="btn ghost" data-act="stud">Studium</button><span style="flex:1"></span><button class="btn ghost danger" data-act="del" title="Supprimer">Dele</button></div>
+    </div></div>`;
+  }).join('');
+  $$('.tile[data-id]', el).forEach(t=>{
+    const img=imgById(t.dataset.id);
+    const save=()=>{ img.title=$('.et',t).value; img.source=$('.es',t).value; img.vocab=$('.ev',t).value; DB.put('images',img); };
+    $$('.et,.es,.ev',t).forEach(x=>x.addEventListener('change',save));
+    $('[data-act=hist]',t).onclick=()=>{ H.imageId=img.id; go('historia'); };
+    $('[data-act=stud]',t).onclick=()=>{ St.imageId=img.id; St.text=''; go('studium'); };
+    $('[data-act=del]',t).onclick=async()=>{
+      const all=[img, ...childrenOf(img.id)], ids=new Set(all.map(x=>x.id));
+      const n=S.sessions.filter(s=>ids.has(s.imageId)).length, np=all.length-1;
+      if(!confirm(`Supprimer « ${img.title} »${np?`, ses ${np} détail(s) recadré(s)`:''} ainsi que ${n} séance(s) et leurs enregistrements ? Action irréversible.`)) return;
+      for(const s of S.sessions.filter(s=>ids.has(s.imageId))){ if(s.audioId) await DB.del('audio',s.audioId); await DB.del('sessions',s.id); }
+      S.sessions=S.sessions.filter(s=>!ids.has(s.imageId));
+      for(const c of [...S.cards.values()].filter(c=>ids.has(c.imageId))){ S.cards.delete(c.id); await DB.del('cards',c.id); }
+      S.images=S.images.filter(x=>!ids.has(x.id)); for(const id of ids) await DB.del('images',id);
+      if(objURLs.has(img.id)){ URL.revokeObjectURL(objURLs.get(img.id)); objURLs.delete(img.id); }
+      go('imagines');
+    };
+  });
+}
+
+/* =====================================================================
+   VUE : HISTORIA
+   ===================================================================== */
+const H = { imageId:null, level:0, cmp:[] };
+VIEWS.historia = m => {
+  if(!S.images.length){ m.innerHTML='<div class="empty">Nulla historia.</div>'; return; }
+  const touches = (s,id) => s.imageId===id || s.partnerId===id;
+  const withCount = S.images.map(i=>({i, n:S.sessions.filter(s=>touches(s,i.id)).length})).sort((a,b)=>b.n-a.n || b.i.addedAt-a.i.addedAt);
+  if(!H.imageId || !imgById(H.imageId)) H.imageId = withCount[0].i.id;
+  const img=imgById(H.imageId);
+  let sess=S.sessions.filter(s=>touches(s,img.id)).sort((a,b)=>b.date-a.date);
+  const levelsUsed=[...new Set(sess.map(s=>s.level))].sort((a,b)=>a-b);
+  if(H.level) sess=sess.filter(s=>s.level===H.level);
+  const cards=LEVELS.map(l=>S.cards.get(`${img.id}|${l.n}`)).filter(Boolean);
+  H.cmp=H.cmp.filter(id=>S.sessions.some(s=>s.id===id && s.audioId));
+  const cmpS=H.cmp.map(id=>S.sessions.find(s=>s.id===id));
+
+  m.innerHTML=`<h2>Historia</h2>
+  <div class="hist">
+    <div class="imglist">${withCount.map(({i,n})=>`<button data-id="${i.id}" aria-current="${i.id===img.id}">${thumbHTML(i)}<span>${esc(i.title)}<br><span class="muted small">${n} exerc.</span></span></button>`).join('')}</div>
+    <div>
+      <div class="row" style="align-items:flex-start;gap:1.2rem">
+        ${img.parentId ? partSVG(img,'','meet','width:160px;height:auto;max-height:160px;border:1px solid var(--line);border-radius:4px;background:var(--paper)')
+          : `<img src="${esc(imgSrc(img))}" alt="" style="width:160px;max-height:160px;object-fit:contain;border:1px solid var(--line);border-radius:4px;background:var(--paper)">`}
+        <div style="flex:1;min-width:14rem">
+          <h3 style="margin-top:0">${esc(img.title)}</h3><p class="muted small">${esc(img.source)}</p>
+          ${cards.length?`<table class="cards"><tr><th>Gradus</th><th>Repetitiones</th><th>Proxima</th></tr>${cards.map(c=>`<tr><td>${ROMAN[c.level]}. ${LEVELS[c.level-1].la}</td><td>${c.reps}${c.lapses?` <span class="muted">(${c.lapses}× rursus)</span>`:''}</td><td>${esc(fmtDate(c.due))}</td></tr>`).join('')}</table>`:''}
+        </div>
+      </div>
+      ${cmpS.length?`<div class="panel"><div class="row" style="justify-content:space-between"><span class="lab">Comparatio exceptionum</span><button class="btn ghost" id="hcmpclear">Purga</button></div>
+        <div class="cmp">${cmpS.map(s=>`<div class="panel"><div class="date">${esc(fmtDate(s.date))}</div><div class="muted small">${ROMAN[s.level]} · ${s.palier} · ${PALIERS[s.palier].la}</div><audio controls data-audio="${s.audioId}"></audio></div>`).join('')}</div>
+        ${cmpS.length<2?'<p class="muted small">Elige alteram exceptionem.</p>':''}</div>`:''}
+      <div class="row" style="margin:.6rem 0"><label><span>Gradus</span><select id="hlvl"><option value="0">omnes</option>${levelsUsed.map(l=>`<option value="${l}" ${l===H.level?'selected':''}>${ROMAN[l]}. ${LEVELS[l-1].la}</option>`).join('')}</select></label>
+        <span class="muted small" style="align-self:flex-end">${sess.length} exercitationes</span></div>
+      <div id="hsess">${sess.length?sess.map(sessHTML).join(''):'<p class="muted">Nondum exercitationes.</p>'}</div>
+    </div>
+  </div>`;
+  $$('.imglist button').forEach(b=>b.onclick=()=>{ H.imageId=b.dataset.id; H.level=0; go('historia'); });
+  $('#hlvl').onchange=e=>{ H.level=+e.target.value; go('historia'); };
+  $('#hcmpclear') && ($('#hcmpclear').onclick=()=>{ H.cmp=[]; go('historia'); });
+  $$('[data-cmp]').forEach(c=>c.onchange=()=>{ const id=c.dataset.cmp; if(c.checked){ H.cmp.push(id); if(H.cmp.length>2) H.cmp.shift(); } else H.cmp=H.cmp.filter(x=>x!==id); go('historia'); });
+  $$('[data-delsess]').forEach(b=>b.onclick=async()=>{
+    if(!confirm('Supprimer cette séance et son enregistrement ? Action irréversible.')) return;
+    const s=S.sessions.find(x=>x.id===b.dataset.delsess); if(!s) return;
+    if(s.audioId) await DB.del('audio', s.audioId);
+    await DB.del('sessions', s.id); S.sessions=S.sessions.filter(x=>x.id!==s.id); go('historia');
+  });
+  hydrateAudio(m);
+};
+function sessHTML(s){
+  const t=s.tournure?TOUR[s.tournure]:null; const rt=s.rating?RATINGS[s.rating-1]:null;
+  return `<div class="sess">
+    <div class="head"><span class="date">${esc(fmtDate(s.date))}</span>
+      <span class="badge">${s.mode==='exercitatio'?'Exercitatio':'Studium'}</span>
+      <span>${ROMAN[s.level]}. ${esc(LEVELS[s.level-1].la)}</span>
+      <span class="muted">${s.palier} · ${PALIERS[s.palier].la}</span>
+      ${rt?`<span class="muted">· ${rt.la}</span>`:''}
+      ${s.durationMs?`<span class="muted small">· ${fmtDur(s.durationMs)}</span>`:''}
+    </div>
+    ${s.partnerId?(()=>{ const a=imgById(s.imageId), b=imgById(s.partnerId); return `<div class="small muted">Comparatio : A. ${esc(a?a.title:'—')} · B. ${esc(b?b.title:'(deleta)')}</div>`; })():''}
+    ${t?`<div class="small muted">Forma: ${esc(t.la)}</div>`:''}
+    ${s.variant?`<div class="small muted">${esc(s.variant.la)}</div>`:''}
+    ${s.text?`<details><summary>${s.textRole==='fons'?'Textus fons':'Textus'}</summary><div class="source lat" lang="la">${textHTML(s.text)}</div></details>`:''}
+    ${s.keywords && s.keywords.length?`<div class="small">Verba clavia: <span class="lat">${s.keywords.map(esc).join(' · ')}</span></div>`:''}
+    ${s.audioId?`<div class="rec"><audio controls data-audio="${s.audioId}"></audio><label class="small muted" style="display:flex;gap:.3rem;align-items:center"><input type="checkbox" data-cmp="${s.id}" ${H.cmp.includes(s.id)?'checked':''}> confer</label></div>`:''}
+    ${s.presenceQ?`<div class="note">${biO(s.presenceQ)}${s.note?' — '+esc(s.note):''}</div>`:(s.note?`<div class="note">${esc(s.note)}</div>`:'')}
+    <div class="row" style="justify-content:flex-end"><button class="btn ghost danger small" data-delsess="${s.id}">Dele</button></div>
+  </div>`;
+}
+
+/* =====================================================================
+   VUE : OPTIONES (réglages, export, import)
+   ===================================================================== */
+VIEWS.optiones = m => {
+  const st=S.settings;
+  m.innerHTML=`<h2>Optiones</h2>
+  <div class="panel">
+    <h3 style="margin-top:0">Exercitatio</h3>
+    <div class="row">
+      <label><span>Usque ad gradum</span><select id="omax">${LEVELS.map(l=>`<option value="${l.n}" ${l.n===st.maxLevel?'selected':''}>${ROMAN[l.n]}. ${l.la}</option>`).join('')}</select></label>
+      <label><span>Chartae novae in diem</span><input type="number" id="onew" min="0" max="100" value="${st.newPerDay}"></label>
+      <label><span>Horologium (sec.)</span><input type="number" id="otimer" min="10" step="10" value="${st.timerSec}"></label>
+      <label><span>Latinitas</span><select id="oreg">${Object.entries(REGISTERS).map(([k,v])=>`<option value="${k}" ${k===st.register?'selected':''}>${v.la}</option>`).join('')}</select></label>
+    </div>
+    <p class="muted small">Exercitatio gradus I–${ROMAN[st.maxLevel]} miscet. Nulli gradus automatice aperiuntur. Gradus VII duas saltem imagines requirit ; altera imago sorte eligitur.</p>
+  </div>
+  <div class="panel">
+    <h3 style="margin-top:0">Data</h3>
+    <p class="small">${S.images.length} imagines · ${S.sessions.length} exercitationes · ${S.sessions.filter(s=>s.audioId).length} exceptiones vocis <span class="muted" id="oquota"></span></p>
+    <div class="row">
+      <button class="btn primary" id="oexp">Exporta omnia (JSON)</button>
+      <label class="btn">Importa… <input type="file" id="oimp" accept="application/json,.json" hidden></label>
+      <span style="flex:1"></span>
+      <button class="btn ghost danger" id="owipe">Dele omnia</button>
+    </div>
+    <p class="muted small" id="omsg">Importatio data tua non delet : res novae adduntur, eaedem (idem id) renovantur.</p>
+  </div>`;
+  $('#omax').onchange=e=>{ st.maxLevel=+e.target.value; saveSettings(); go('optiones'); };
+  $('#onew').onchange=e=>{ st.newPerDay=Math.max(0,+e.target.value||0); saveSettings(); };
+  $('#otimer').onchange=e=>{ st.timerSec=Math.max(10,+e.target.value||90); saveSettings(); };
+  $('#oreg').onchange=e=>{ st.register=e.target.value; St.register=st.register; saveSettings(); };
+  $('#oexp').onclick=exportAll;
+  $('#oimp').onchange=e=>{ const f=e.target.files[0]; if(f) importAll(f); };
+  $('#owipe').onclick=async()=>{
+    if(!confirm('Supprimer TOUTES les données (images, séances, enregistrements) ? Irréversible. Pense à exporter d’abord.')) return;
+    if(!confirm('Vraiment tout supprimer ?')) return;
+    await DB.clearAll(); S.images=[]; S.sessions=[]; S.cards=new Map(); S.settings={...DEFAULT_SETTINGS, newToday:{date:'',count:0}}; await saveSettings(); go('optiones');
+  };
+  try{ navigator.storage && navigator.storage.estimate && navigator.storage.estimate().then(q=>{ const el=$('#oquota'); if(el && q.usage!=null) el.textContent=`· ${(q.usage/1048576).toFixed(1)} Mo`; }); }catch(e){}
+};
+
+function blobToDataURL(b){ return new Promise((res,rej)=>{ const fr=new FileReader(); fr.onload=()=>res(fr.result); fr.onerror=()=>rej(fr.error); fr.readAsDataURL(b); }); }
+function dataURLToBlob(d){
+  const [head, data]=d.split(','); const mime=(head.match(/data:([^;]+)/)||[])[1]||'application/octet-stream';
+  const bin=atob(data); const arr=new Uint8Array(bin.length); for(let i=0;i<bin.length;i++) arr[i]=bin.charCodeAt(i);
+  return new Blob([arr],{type:mime});
+}
+async function exportAll(){
+  const msg=$('#omsg'); msg.textContent='Paratur…';
+  try{
+    const images=[]; for(const i of S.images){ const {blob, ...rest}=i; images.push({...rest, blobData: blob ? await blobToDataURL(blob) : null}); }
+    const audio=[]; for(const a of await DB.all('audio')){ if(a.blob) audio.push({id:a.id, mime:a.mime, imageId:a.imageId, data: await blobToDataURL(a.blob)}); }
+    const out={ app:'progymnasmata', version:1, exportedAt:new Date().toISOString(), settings:S.settings, images, cards:[...S.cards.values()], sessions:S.sessions, audio };
+    const blob=new Blob([JSON.stringify(out)],{type:'application/json'});
+    const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`progymnasmata-${todayStr()}.json`; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(a.href), 4000);
+    msg.textContent=`Exportatum : ${(blob.size/1048576).toFixed(1)} Mo.`;
+  }catch(e){ console.error(e); msg.textContent='Exportatio defecit : '+e.message; }
+}
+async function importAll(file){
+  const msg=$('#omsg'); msg.textContent='Importatur…';
+  try{
+    const j=JSON.parse(await file.text());
+    if(j.app!=='progymnasmata') throw new Error('non est fasciculus Progymnasmatum');
+    const images=(j.images||[]).map(i=>{ const {blobData, ...rest}=i; return {...rest, blob: blobData ? dataURLToBlob(blobData) : null}; });
+    const audio=(j.audio||[]).map(a=>({id:a.id, mime:a.mime, imageId:a.imageId, blob:dataURLToBlob(a.data)}));
+    await DB.putMany('images', images); await DB.putMany('audio', audio);
+    await DB.putMany('cards', j.cards||[]); await DB.putMany('sessions', j.sessions||[]);
+    if(j.settings){ S.settings={...DEFAULT_SETTINGS, ...S.settings, ...j.settings, id:'settings'}; await saveSettings(); setConsLang(S.settings.consLang); }
+    await loadAll();
+    msg.textContent=`Importata : ${images.length} imagines, ${(j.sessions||[]).length} exercitationes, ${audio.length} exceptiones.`;
+    toast('Importatio perfecta.');
+  }catch(e){ console.error(e); msg.textContent='Importatio defecit : '+e.message; }
+}
+
+/* =====================================================================
+   DÉMARRAGE
+   ===================================================================== */
+async function loadAll(){
+  S.images=(await DB.all('images')).sort((a,b)=>(a.addedAt||0)-(b.addedAt||0));
+  S.cards=new Map((await DB.all('cards')).map(c=>[c.id,c]));
+  S.sessions=await DB.all('sessions');
+  objURLs.forEach(u=>{ try{ URL.revokeObjectURL(u); }catch(e){} }); objURLs.clear();
+}
+(async function init(){
+  await DB.open();
+  try{ S.settings={...DEFAULT_SETTINGS, ...((await DB.get('kv','settings'))||{})}; }catch(e){ S.settings={...DEFAULT_SETTINGS}; }
+  if(!S.settings.newToday) S.settings.newToday={date:'',count:0};
+  await loadAll();
+  setConsLang(S.settings.consLang||'la');
+  document.body.classList.toggle('notes-off', !!S.settings.hideNotes);
+  St.register=S.settings.register;
+  try{ navigator.storage && navigator.storage.persist && navigator.storage.persist(); }catch(e){}
+  go(S.images.length ? 'exercitatio' : 'imagines');
+})();
+</script>
+</body>
+</html>
