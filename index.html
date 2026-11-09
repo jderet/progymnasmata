@@ -399,22 +399,35 @@ function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('sh
 function banner(msg){ const b=$('#banner'); b.textContent=msg; b.classList.add('show'); }
 
 /* =====================================================================
-   STOCKAGE (IndexedDB, repli en mémoire)
+   STOCKAGE
+   1. Serveur local (server.py) : tout est écrit dans le dossier data/ de l'application.
+   2. Sinon IndexedDB du navigateur, puis mémoire temporaire en dernier recours.
    ===================================================================== */
 const STORES = ['images','cards','sessions','audio','kv'];
 const DB = {
-  db:null, mem:null,
-  useMem(){ this.mem={}; STORES.forEach(s=>this.mem[s]=new Map()); banner("Memoria localis (IndexedDB) non praesto est : data tantum ad tempus servantur. Exporta antequam paginam claudis."); },
-  open(){
+  db:null, mem:null, srv:false, sent:new WeakSet(),
+  useMem(){ this.mem={}; STORES.forEach(s=>this.mem[s]=new Map()); banner("Memoria localis non praesto est : data tantum ad tempus servantur. Exporta antequam paginam claudis."); },
+  async open(){
+    this.srv = await this._ping();
+    const ok = await this._openIDB();          // toujours ouvert : sert à la migration
+    if(this.srv) return true;
+    if(!ok){ this.useMem(); return false; }
+    banner("Servitor localis non adest : data tantum in hoc navigatore servantur, non in dossier « data ». Lance l’application avec : python3 server.py");
+    return true;
+  },
+  async _ping(){
+    try{ const r=await fetch('/api/ping',{cache:'no-store'}); if(!r.ok) return false; const j=await r.json(); return !!(j && j.ok); }catch(e){ return false; }
+  },
+  _openIDB(){
     return new Promise(res=>{
       try{
-        if(!('indexedDB' in window)){ this.useMem(); return res(false); }
+        if(!('indexedDB' in window)) return res(false);
         const rq = indexedDB.open('progymnasmata', 1);
         rq.onupgradeneeded = () => { const d=rq.result; STORES.forEach(s=>{ if(!d.objectStoreNames.contains(s)) d.createObjectStore(s,{keyPath:'id'}); }); };
         rq.onsuccess = () => { this.db=rq.result; res(true); };
-        rq.onerror = () => { this.useMem(); res(false); };
-        rq.onblocked = () => { this.useMem(); res(false); };
-      }catch(e){ this.useMem(); res(false); }
+        rq.onerror = () => res(false);
+        rq.onblocked = () => res(false);
+      }catch(e){ res(false); }
     });
   },
   _tx(store, mode, fn){
@@ -426,15 +439,73 @@ const DB = {
       }catch(e){ rej(e); }
     });
   },
-  async get(s,k){ if(this.mem) return this.mem[s].get(k); try{ return await this._tx(s,'readonly',st=>st.get(k)); }catch(e){ console.warn(e); return undefined; } },
-  async all(s){ if(this.mem) return [...this.mem[s].values()]; try{ return await this._tx(s,'readonly',st=>st.getAll()) || []; }catch(e){ console.warn(e); return []; } },
-  async put(s,v){ if(this.mem){ this.mem[s].set(v.id,v); return true; } try{ await this._tx(s,'readwrite',st=>{ st.put(v); }); return true; }catch(e){ console.warn(e); toast('Servari non potuit : '+(e && e.name || e)); return false; } },
-  async putMany(s,arr){ if(this.mem){ arr.forEach(v=>this.mem[s].set(v.id,v)); return true; } try{ await this._tx(s,'readwrite',st=>{ arr.forEach(v=>st.put(v)); }); return true; }catch(e){ console.warn(e); toast('Servari non potuit : '+(e && e.name || e)); return false; } },
-  async del(s,k){ if(this.mem){ this.mem[s].delete(k); return true; } try{ await this._tx(s,'readwrite',st=>{ st.delete(k); }); return true; }catch(e){ console.warn(e); return false; } },
-  async clearAll(){ for(const s of STORES){ if(this.mem) this.mem[s].clear(); else { try{ await this._tx(s,'readwrite',st=>{ st.clear(); }); }catch(e){ console.warn(e); } } } },
+  /* --- serveur --- */
+  _url(kind, s, k){ return `/api/${kind}/${s}${k!=null ? '/'+encodeURIComponent(k) : ''}`; },
+  async _check(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r; },
+  async _hydrate(s, rec){
+    // Les fichiers (images, sons) sont stockés à part ; « __blob » en garde le type.
+    if(rec && rec.__blob){
+      try{ const r=await fetch(this._url('blob',s,rec.id),{cache:'no-store'}); if(r.ok){ const b=await r.blob(); rec.blob=new Blob([b],{type:rec.__blob}); this.sent.add(rec.blob); } }catch(e){ console.warn(e); }
+    }
+    return rec;
+  },
+  async _sPut(s, v){
+    const {blob, ...rest} = v;
+    if(blob instanceof Blob){
+      const type=blob.type||'application/octet-stream';
+      if(!this.sent.has(blob)){ await this._check(await fetch(this._url('blob',s,v.id),{method:'PUT', headers:{'Content-Type':type}, body:blob})); this.sent.add(blob); }
+      rest.__blob=type;
+    }
+    await this._check(await fetch(this._url('store',s,v.id),{method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(rest)}));
+  },
+  /* --- interface commune --- */
+  async get(s,k){
+    if(this.srv){ try{ const r=await fetch(this._url('store',s,k),{cache:'no-store'}); if(r.status===404) return undefined; await this._check(r); return await this._hydrate(s, await r.json()); }catch(e){ console.warn(e); return undefined; } }
+    if(this.mem) return this.mem[s].get(k); try{ return await this._tx(s,'readonly',st=>st.get(k)); }catch(e){ console.warn(e); return undefined; }
+  },
+  async all(s){
+    if(this.srv){ try{ const r=await this._check(await fetch(this._url('store',s),{cache:'no-store'})); const list=await r.json(); await Promise.all(list.map(x=>this._hydrate(s,x))); return list; }catch(e){ console.warn(e); toast('Data legi non potuerunt : '+e.message); return []; } }
+    if(this.mem) return [...this.mem[s].values()]; try{ return await this._tx(s,'readonly',st=>st.getAll()) || []; }catch(e){ console.warn(e); return []; }
+  },
+  async put(s,v){
+    if(this.srv){ try{ await this._sPut(s,v); return true; }catch(e){ console.warn(e); toast('Servari non potuit : '+e.message); return false; } }
+    if(this.mem){ this.mem[s].set(v.id,v); return true; } try{ await this._tx(s,'readwrite',st=>{ st.put(v); }); return true; }catch(e){ console.warn(e); toast('Servari non potuit : '+(e && e.name || e)); return false; }
+  },
+  async putMany(s,arr){
+    if(this.srv){ try{ for(const v of arr) await this._sPut(s,v); return true; }catch(e){ console.warn(e); toast('Servari non potuit : '+e.message); return false; } }
+    if(this.mem){ arr.forEach(v=>this.mem[s].set(v.id,v)); return true; } try{ await this._tx(s,'readwrite',st=>{ arr.forEach(v=>st.put(v)); }); return true; }catch(e){ console.warn(e); toast('Servari non potuit : '+(e && e.name || e)); return false; }
+  },
+  async del(s,k){
+    if(this.srv){ try{ await this._check(await fetch(this._url('store',s,k),{method:'DELETE'})); return true; }catch(e){ console.warn(e); return false; } }
+    if(this.mem){ this.mem[s].delete(k); return true; } try{ await this._tx(s,'readwrite',st=>{ st.delete(k); }); return true; }catch(e){ console.warn(e); return false; }
+  },
+  async clearAll(){
+    for(const s of STORES){
+      if(this.srv){ try{ await fetch(this._url('store',s),{method:'DELETE'}); }catch(e){ console.warn(e); } }
+      else if(this.mem) this.mem[s].clear();
+      else { try{ await this._tx(s,'readwrite',st=>{ st.clear(); }); }catch(e){ console.warn(e); } }
+    }
+  },
+  /* Copie dans data/ ce que ce navigateur avait gardé (IndexedDB) et qui n'y est pas encore. Une seule fois par navigateur. */
+  async migrateFromBrowser(){
+    if(!this.srv || !this.db) return 0;
+    try{
+      const mark=await this._tx('kv','readonly',st=>st.get('migratedToFolder'));
+      if(mark) return 0;
+      let n=0;
+      for(const s of STORES){
+        const local=(await this._tx(s,'readonly',st=>st.getAll())) || [];
+        if(!local.length) continue;
+        const r=await this._check(await fetch(this._url('store',s),{cache:'no-store'}));
+        const have=new Set((await r.json()).map(x=>x.id));
+        for(const v of local){ if(v.id==='migratedToFolder' || have.has(v.id)) continue; await this._sPut(s,v); if(s!=='kv') n++; }
+      }
+      await this._tx('kv','readwrite',st=>{ st.put({id:'migratedToFolder', at:Date.now()}); });
+      return n;
+    }catch(e){ console.warn(e); toast('Migratio defecit : '+e.message); return 0; }
+  },
 };
 
-/* État en mémoire */
 const S = { images:[], cards:new Map(), sessions:[], settings:null };
 const DEFAULT_SETTINGS = { id:'settings', maxLevel:1, newPerDay:5, consLang:'la', register:'classicus', timerSec:90, newToday:{date:'',count:0} };
 const saveSettings = () => DB.put('kv', S.settings);
@@ -1576,6 +1647,7 @@ VIEWS.optiones = m => {
       <span style="flex:1"></span>
       <button class="btn ghost danger" id="owipe">Dele omnia</button>
     </div>
+    <p class="small">${DB.srv?'Data in dossier « data » applicationis servantur.':'<span style="color:var(--danger)">Data tantum in hoc navigatore servantur (servitor localis non adest : python3 server.py).</span>'}</p>
     <p class="muted small" id="omsg">Importatio data tua non delet : res novae adduntur, eaedem (idem id) renovantur.</p>
   </div>`;
   $('#omax').onchange=e=>{ st.maxLevel=+e.target.value; saveSettings(); go('optiones'); };
@@ -1601,7 +1673,7 @@ function dataURLToBlob(d){
 async function exportAll(){
   const msg=$('#omsg'); msg.textContent='Paratur…';
   try{
-    const images=[]; for(const i of S.images){ const {blob, ...rest}=i; images.push({...rest, blobData: blob ? await blobToDataURL(blob) : null}); }
+    const images=[]; for(const i of S.images){ const {blob, __blob, ...rest}=i; images.push({...rest, blobData: blob ? await blobToDataURL(blob) : null}); }
     const audio=[]; for(const a of await DB.all('audio')){ if(a.blob) audio.push({id:a.id, mime:a.mime, imageId:a.imageId, data: await blobToDataURL(a.blob)}); }
     const out={ app:'progymnasmata', version:1, exportedAt:new Date().toISOString(), settings:S.settings, images, cards:[...S.cards.values()], sessions:S.sessions, audio };
     const blob=new Blob([JSON.stringify(out)],{type:'application/json'});
@@ -1637,6 +1709,8 @@ async function loadAll(){
 }
 (async function init(){
   await DB.open();
+  const migrated = await DB.migrateFromBrowser();
+  if(migrated) setTimeout(()=>toast(`${migrated} res ex navigatore in dossier « data » translatae.`), 300);
   try{ S.settings={...DEFAULT_SETTINGS, ...((await DB.get('kv','settings'))||{})}; }catch(e){ S.settings={...DEFAULT_SETTINGS}; }
   if(!S.settings.newToday) S.settings.newToday={date:'',count:0};
   await loadAll();
